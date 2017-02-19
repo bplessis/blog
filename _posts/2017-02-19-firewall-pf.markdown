@@ -12,6 +12,8 @@ Time to think about protecting if, while the Internet is the place to be it's al
 
 So, we have to play with FreeBSD firewall solution: *PF*, as in *Packet Filter*.
 
+## Configuring ##
+
 So first thing is to setup a few rules in the */etc/pf.conf* file:
 
     pub="62.210.247.118" # Host public IPv4 address
@@ -56,6 +58,7 @@ So first thing is to setup a few rules in the */etc/pf.conf* file:
     pass in quick on $if proto tcp from any to $pub6 port ssh
     pass in quick on $if proto udp from any to $pub6 port 60000:60100
 
+## Starting ##
 
 Then a few line in the */etc/rc.conf* are needed to automatically activate the firewall on start:
 
@@ -69,8 +72,19 @@ Then it's just a matter of starting the service as usual.
 >
 > service pflod start
 
+## Updating ##
+
+Whenever you need to update the pf ruleset, you just have to edit the */etc/pf.conf* file, and then test it:
+
+> pfctl -nf /etc/pf.conf
+
+And update it with:
+
+> pfctl -f /etc/pf.conf
+
 # sshguard #
 
+Having a general firewall is good, it could be usefull to do some automated log analysis and defense. For that you can use the same mollyguard tool as under linux system, or you can use `sshguard` who has an native `pf` integration:
 
     root@frb:~ # pkg install sshguard-pf
     Updating FreeBSD repository catalogue...
@@ -112,10 +126,13 @@ Then it's just a matter of starting the service as usual.
       sshguard_prescribe_interval -> sshguard_reset_interval
     ##########################################################################
 
-sysrc sshguard_enable="YES"
+Next step is simply activating the service in *rc.conf*, manually or by using `sysrc`:
+> sysrc sshguard_enable="YES"
 
-service sshguard start
+And starting up the service:
+> service sshguard start
 
-pfctl -t sshguard -T show
+You can then look for sshguard message in */var/log/message* and inspect the deny table using:
+> pfctl -t sshguard -T show
 
 NB setting up a few IPs addresses in */usr/local/etc/sshguard.whitelist* might be a good idea.
