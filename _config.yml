@@ -17,4 +17,13 @@ twitter_username: silmaril34
 github_username:  bplessis
 
 # Build settings
-markdown: kramdown
+#markdown: kramdown
+
+gems:
+  - jemoji
+exclude:
+  - "README.md"
+  - "CHANGELOG.md"
+  - "CNAME"
+  - "Gemfile"
+  - "Gemfile.lock"
