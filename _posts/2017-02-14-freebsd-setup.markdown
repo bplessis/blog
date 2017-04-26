@@ -147,8 +147,10 @@ And last but not least we need to install a replacement for sendmail:
 
 Editing */etc/login.conf* to add
 
+    ...
     :charset=UTF-8:\
     :lang=en_US.UTF-8:\
+    ...
 
 And then rebuild the database with:
 
@@ -204,13 +206,7 @@ And then start the daemon:
 
 > service rtsold start
 
+It's then easy to add a static IPv6 to the public interface and a IPv6 network on the loopback for the jails by adding the following to *rc.conf*:
 
-#> sysrc ifconfig_bge0_ipv6_alias0="inet6 alias 2001:bc8:2909:100:::dead:beef prefixlen 128"
-
-#> sysrc ifconfig_lo1_ipv6="inet6 2001:bc8:2909:101:0:0:0:1/64"
-
-    ipv6_gateway_enable="NO"
-    # necessaire si la machine est gateway ipv6
-    #ipv6_cpe_wanif="bge0"
-
-    gateway_enable="NO"
+    ifconfig_bge0_ipv6_alias0="inet6 alias 2001:bc8:2909:100:::dead:beef prefixlen 128"
+    ifconfig_lo1_ipv6="inet6 2001:bc8:2909:101:0:0:0:1/64"
