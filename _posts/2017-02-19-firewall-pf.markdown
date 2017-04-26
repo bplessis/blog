@@ -70,7 +70,7 @@ Then it's just a matter of starting the service as usual.
 
 > service pf start
 >
-> service pflod start
+> service pflogd start
 
 ## Updating ##
 
