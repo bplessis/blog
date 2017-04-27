@@ -15,8 +15,8 @@ FreeBSD contrarious to linux system is separated into two main part, the main pa
 To keep the base system up to date we need to use the *freebsd-update* utility.
 
 {% highlight shell %}
-# freebsd-update fetch
-# freebsd-update install
+root@frb:~ # freebsd-update fetch
+root@frb:~ # freebsd-update install
 {% endhighlight %}
 
 # Additionnal Software #
@@ -135,7 +135,7 @@ Default values are available in */etc/defaults/rc.conf*.
 FreeBSD ship with sendmail as default mail solution. To replace it we need first to disable it with:
 
 {% highlight shell %}
-# sysrc sendmail_enable="NONE"
+root@frb:~ # sysrc sendmail_enable="NONE"
 {% endhighlight %}
 
 We also need to disable sendmail related periodic traitements, for that it is necessary to create */etc/periodic.conf* if it doesn't exist and add the following:
@@ -149,7 +149,7 @@ We also need to disable sendmail related periodic traitements, for that it is ne
 And last but not least, i'm sorry but we need to install a replacement for sendmail, that's not an options ^^ :
 
 {% highlight shell %}
-# pkg install postfix
+root@frb:~ # pkg install postfix
 {% endhighlight %}
 
 ## Charset ##
@@ -164,7 +164,7 @@ Editing */etc/login.conf* to add
 And then rebuild the database with:
 
 {% highlight shell %}
-# cap_mkdb /etc/login.conf
+root@frb:~ # cap_mkdb /etc/login.conf
 {% endhighlight %}
 
 ## IPv6 ##
@@ -174,13 +174,13 @@ FreeBSD support notively IPv6 networking, however online IP allocation system re
 Start by installing dhcp6c from the ports collection / pkg repository:
 
 {% highlight shell %}
-# pkg install dhcp6c
+root@frb:~ # pkg install dhcp6c
 {% endhighlight %}
 
 Build the duid file using this syntax:
 
 {% highlight shell %}
-# echo 00:03:XX:XX:... | awk '{ gsub(":"," "); printf "0: 0a 00 %s\n", $0 }' | xxd -r > /var/db/dhcp6c_duid
+root@frb:~ # echo 00:03:XX:XX:... | awk '{ gsub(":"," "); printf "0: 0a 00 %s\n", $0 }' | xxd -r > /var/db/dhcp6c_duid
 {% endhighlight %}
 
 And configure dhcp6c:
@@ -207,12 +207,12 @@ You also might need to set some interface related option using rc.conf:
 
 Next start the dhcp daemon:
 {% highlight shell %}
-# service dhcp6c start
+root@frb:~ # service dhcp6c start
 {% endhighlight %}
 
 You can also start it in a debug mode prior to using the service, to check that everything is ok:
 {% highlight shell %}
-# dhcp6c -Df -c /usr/local/etc/dhcp6c.conf bge0
+root@frb:~ # dhcp6c -Df -c /usr/local/etc/dhcp6c.conf bge0
 {% endhighlight %}
 
 Also you will need to activate the router solicitation daemon to trigger RS (Router Sollicitation) request and process RA (Router Annoncement) replies.
@@ -224,7 +224,7 @@ Add the following to your *rc.conf* file:
 And then start the daemon:
 
 {% highlight shell %}
-# service rtsold start
+root@frb:~ # service rtsold start
 {% endhighlight %}
 
 It's then easy to add a static IPv6 to the public interface and a IPv6 network on the loopback for the jails by adding the following to *rc.conf*:

@@ -69,8 +69,8 @@ Then a few line in the */etc/rc.conf* are needed to automatically activate the f
 Then it's just a matter of starting the service as usual.
 
 {% highlight shell %}
-# service pf start
-# service pflogd start
+root@frb:~ # service pf start
+root@frb:~ # service pflogd start
 {% endhighlight %}
 
 ## Updating ##
@@ -78,13 +78,13 @@ Then it's just a matter of starting the service as usual.
 Whenever you need to update the pf ruleset, you just have to edit the */etc/pf.conf* file, and then test it:
 
 {% highlight shell %}
-# pfctl -nf /etc/pf.conf
+root@frb:~ # pfctl -nf /etc/pf.conf
 {% endhighlight %}
 
 And update it with:
 
 {% highlight shell %}
-# pfctl -f /etc/pf.conf
+root@frb:~ # pfctl -f /etc/pf.conf
 {% endhighlight %}
 
 # sshguard #
@@ -135,17 +135,17 @@ Message from sshguard-pf-1.7.0_1:
 
 Next step is simply activating the service in *rc.conf*, manually or by using `sysrc`:
 {% highlight shell %}
-# sysrc sshguard_enable="YES"
+root@frb:~ # sysrc sshguard_enable="YES"
 {% endhighlight %}
 
 And starting up the service:
 {% highlight shell %}
-# service sshguard start
+root@frb:~ # service sshguard start
 {% endhighlight %}
 
 You can then look for sshguard message in */var/log/message* and inspect the deny table using:
 {% highlight shell %}
-# pfctl -t sshguard -T show
+root@frb:~ # pfctl -t sshguard -T show
 {% endhighlight %}
 
 NB setting up a few IPs addresses in */usr/local/etc/sshguard.whitelist* might be a good idea.

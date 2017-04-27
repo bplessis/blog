@@ -44,7 +44,7 @@ avail memory = 33090113536 (31557 MB)
 ```
 
 {% highlight shell %}
-# zfs list
+root@frb:~ # zfs list
 NAME                    USED  AVAIL  REFER  MOUNTPOINT
 zroot                  2.37G   897G    96K  /zroot
 zroot/ROOT             1.07G   897G    96K  none
