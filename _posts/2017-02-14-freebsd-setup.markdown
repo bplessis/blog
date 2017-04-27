@@ -14,8 +14,10 @@ FreeBSD contrarious to linux system is separated into two main part, the main pa
 
 To keep the base system up to date we need to use the *freebsd-update* utility.
 
-> freebsd-update fetch
-> freebsd-update install
+{% highlight shell %}
+# freebsd-update fetch
+# freebsd-update install
+{% endhighlight %}
 
 # Additionnal Software #
 
@@ -25,80 +27,83 @@ The choice is yours, *ports* allow for fine tuning build options, while *pkg* pa
 
 *pkg* must be bootstrapped by running it first:
 
-    root@frb:~ # pkg
-    The package management tool is not yet installed on your system.
-    Do you want to fetch and install it now? [y/N]: y
-    Bootstrapping pkg from pkg+http://pkg.FreeBSD.org/FreeBSD:11:amd64/quarterly, please wait...
-    Verifying signature with trusted certificate pkg.freebsd.org.2013102301... done
-    [frb] Installing pkg-1.9.4_1...
-    [frb] Extracting pkg-1.9.4_1: 100%
-    pkg: not enough arguments
-    Usage: pkg [-v] [-d] [-l] [-N] [-j <jail name or id>|-c <chroot path>|-r <rootdir>] [-C <configuration file>] [-R <repo config dir>] [-o var=value] [-4|-6] <command> [<args>]
+{% highlight shell %}
+root@frb:~ # pkg
+The package management tool is not yet installed on your system.
+Do you want to fetch and install it now? [y/N]: y
+Bootstrapping pkg from pkg+http://pkg.FreeBSD.org/FreeBSD:11:amd64/quarterly, please wait...
+Verifying signature with trusted certificate pkg.freebsd.org.2013102301... done
+[frb] Installing pkg-1.9.4_1...
+[frb] Extracting pkg-1.9.4_1: 100%
+pkg: not enough arguments
+Usage: pkg [-v] [-d] [-l] [-N] [-j <jail name or id>|-c <chroot path>|-r <rootdir>] [-C <configuration file>] [-R <repo config dir>] [-o var=value] [-4|-6] <command> [<args>]
 
-    For more information on available commands and options see 'pkg help'.
+For more information on available commands and options see 'pkg help'.
+{% endhighlight %}
 
 Then we can use the install method to start adding some value to the base system:
 
-    root@frb:~ # pkg install zsh bash
-    Updating FreeBSD repository catalogue...
-    [frb] Fetching meta.txz: 100%    944 B   0.9kB/s    00:01
-    [frb] Fetching packagesite.txz: 100%    6 MiB   5.9MB/s    00:01
-    Processing entries: 100%
-    FreeBSD repository update completed. 25857 packages processed.
-    Updating database digests format: 100%
-    The following 4 package(s) will be affected (of 0 checked):
+{% highlight shell %}
+root@frb:~ # pkg install zsh bash
+Updating FreeBSD repository catalogue...
+[frb] Fetching meta.txz: 100%    944 B   0.9kB/s    00:01
+[frb] Fetching packagesite.txz: 100%    6 MiB   5.9MB/s    00:01
+Processing entries: 100%
+FreeBSD repository update completed. 25857 packages processed.
+Updating database digests format: 100%
+The following 4 package(s) will be affected (of 0 checked):
 
-    New packages to be INSTALLED:
-            zsh: 5.3.1
-            bash: 4.4.12
-            indexinfo: 0.2.6
-            gettext-runtime: 0.19.8.1_1
+New packages to be INSTALLED:
+        zsh: 5.3.1
+        bash: 4.4.12
+        indexinfo: 0.2.6
+        gettext-runtime: 0.19.8.1_1
 
-    Number of packages to be installed: 4
+Number of packages to be installed: 4
 
-    The process will require 24 MiB more space.
-    5 MiB to be downloaded.
+The process will require 24 MiB more space.
+5 MiB to be downloaded.
 
-    Proceed with this action? [y/N]: y
-    [frb] Fetching zsh-5.3.1.txz: 100%    4 MiB   4.1MB/s    00:01
-    [frb] Fetching bash-4.4.12.txz: 100%    1 MiB   1.5MB/s    00:01
-    [frb] Fetching indexinfo-0.2.6.txz: 100%    5 KiB   5.3kB/s    00:01
-    [frb] Fetching gettext-runtime-0.19.8.1_1.txz: 100%  147 KiB 151.0kB/s    00:01
-    Checking integrity... done (0 conflicting)
-    [frb] [1/4] Installing indexinfo-0.2.6...
-    [frb] [1/4] Extracting indexinfo-0.2.6: 100%
-    [frb] [2/4] Installing gettext-runtime-0.19.8.1_1...
-    [frb] [2/4] Extracting gettext-runtime-0.19.8.1_1: 100%
-    [frb] [3/4] Installing zsh-5.3.1...
-    [frb] [3/4] Extracting zsh-5.3.1: 100%
-    [frb] [4/4] Installing bash-4.4.12...
-    [frb] [4/4] Extracting bash-4.4.12: 100%
-    Message from zsh-5.3.1:
-    ==========================================================
+Proceed with this action? [y/N]: y
+[frb] Fetching zsh-5.3.1.txz: 100%    4 MiB   4.1MB/s    00:01
+[frb] Fetching bash-4.4.12.txz: 100%    1 MiB   1.5MB/s    00:01
+[frb] Fetching indexinfo-0.2.6.txz: 100%    5 KiB   5.3kB/s    00:01
+[frb] Fetching gettext-runtime-0.19.8.1_1.txz: 100%  147 KiB 151.0kB/s    00:01
+Checking integrity... done (0 conflicting)
+[frb] [1/4] Installing indexinfo-0.2.6...
+[frb] [1/4] Extracting indexinfo-0.2.6: 100%
+[frb] [2/4] Installing gettext-runtime-0.19.8.1_1...
+[frb] [2/4] Extracting gettext-runtime-0.19.8.1_1: 100%
+[frb] [3/4] Installing zsh-5.3.1...
+[frb] [3/4] Extracting zsh-5.3.1: 100%
+[frb] [4/4] Installing bash-4.4.12...
+[frb] [4/4] Extracting bash-4.4.12: 100%
+Message from zsh-5.3.1:
+==========================================================
 
-    By default, zsh looks for system-wide defaults in
-    /usr/local/etc.
+By default, zsh looks for system-wide defaults in
+/usr/local/etc.
 
-    If you previously set up /etc/zprofile, /etc/zshenv, etc.,
-    either move them to /usr/local/etc or rebuild zsh with the
-    ETCDIR option enabled.
+If you previously set up /etc/zprofile, /etc/zshenv, etc.,
+either move them to /usr/local/etc or rebuild zsh with the
+ETCDIR option enabled.
 
-    ==========================================================
-    Message from bash-4.4.12:
-    ======================================================================
+==========================================================
+Message from bash-4.4.12:
+======================================================================
 
-    bash requires fdescfs(5) mounted on /dev/fd
+bash requires fdescfs(5) mounted on /dev/fd
 
-    If you have not done it yet, please do the following:
+If you have not done it yet, please do the following:
 
-            mount -t fdescfs fdesc /dev/fd
+        mount -t fdescfs fdesc /dev/fd
 
-    To make it permanent, you need the following lines in /etc/fstab:
+To make it permanent, you need the following lines in /etc/fstab:
 
-            fdesc   /dev/fd         fdescfs         rw      0       0
+        fdesc   /dev/fd         fdescfs         rw      0       0
 
-    ======================================================================
-
+======================================================================
+{% endhighlight %}
 
 There is a small set of useful software i installed of the system:
 * shells:
@@ -129,7 +134,9 @@ Default values are available in */etc/defaults/rc.conf*.
 
 FreeBSD ship with sendmail as default mail solution. To replace it we need first to disable it with:
 
-> sysrc sendmail_enable="NONE"
+{% highlight shell %}
+# sysrc sendmail_enable="NONE"
+{% endhighlight %}
 
 We also need to disable sendmail related periodic traitements, for that it is necessary to create */etc/periodic.conf* if it doesn't exist and add the following:
 
@@ -139,9 +146,11 @@ We also need to disable sendmail related periodic traitements, for that it is ne
     daily_status_include_submit_mailq="NO"
     daily_submit_queuerun="NO"
 
-And last but not least we need to install a replacement for sendmail:
+And last but not least, i'm sorry but we need to install a replacement for sendmail, that's not an options ^^ :
 
-> pkg install postfix
+{% highlight shell %}
+# pkg install postfix
+{% endhighlight %}
 
 ## Charset ##
 
@@ -154,7 +163,9 @@ Editing */etc/login.conf* to add
 
 And then rebuild the database with:
 
-> cap_mkdb /etc/login.conf
+{% highlight shell %}
+# cap_mkdb /etc/login.conf
+{% endhighlight %}
 
 ## IPv6 ##
 
@@ -162,11 +173,15 @@ FreeBSD support notively IPv6 networking, however online IP allocation system re
 
 Start by installing dhcp6c from the ports collection / pkg repository:
 
-> pkg install dhcp6c
+{% highlight shell %}
+# pkg install dhcp6c
+{% endhighlight %}
 
 Build the duid file using this syntax:
 
-> echo 00:03:XX:XX:... | awk '{ gsub(":"," "); printf "0: 0a 00 %s\n", $0 }' | xxd -r > /var/db/dhcp6c_duid
+{% highlight shell %}
+# echo 00:03:XX:XX:... | awk '{ gsub(":"," "); printf "0: 0a 00 %s\n", $0 }' | xxd -r > /var/db/dhcp6c_duid
+{% endhighlight %}
 
 And configure dhcp6c:
 
@@ -191,10 +206,14 @@ You also might need to set some interface related option using rc.conf:
     dhcp6c_interfaces="bge0"
 
 Next start the dhcp daemon:
-> service dhcp6c start
+{% highlight shell %}
+# service dhcp6c start
+{% endhighlight %}
 
 You can also start it in a debug mode prior to using the service, to check that everything is ok:
-> dhcp6c -Df -c /usr/local/etc/dhcp6c.conf bge0
+{% highlight shell %}
+# dhcp6c -Df -c /usr/local/etc/dhcp6c.conf bge0
+{% endhighlight %}
 
 Also you will need to activate the router solicitation daemon to trigger RS (Router Sollicitation) request and process RA (Router Annoncement) replies.
 Add the following to your *rc.conf* file:
@@ -204,7 +223,9 @@ Add the following to your *rc.conf* file:
 
 And then start the daemon:
 
-> service rtsold start
+{% highlight shell %}
+# service rtsold start
+{% endhighlight %}
 
 It's then easy to add a static IPv6 to the public interface and a IPv6 network on the loopback for the jails by adding the following to *rc.conf*:
 

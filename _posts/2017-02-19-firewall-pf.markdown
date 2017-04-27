@@ -68,71 +68,84 @@ Then a few line in the */etc/rc.conf* are needed to automatically activate the f
 
 Then it's just a matter of starting the service as usual.
 
-> service pf start
->
-> service pflogd start
+{% highlight shell %}
+# service pf start
+# service pflogd start
+{% endhighlight %}
 
 ## Updating ##
 
 Whenever you need to update the pf ruleset, you just have to edit the */etc/pf.conf* file, and then test it:
 
-> pfctl -nf /etc/pf.conf
+{% highlight shell %}
+# pfctl -nf /etc/pf.conf
+{% endhighlight %}
 
 And update it with:
 
-> pfctl -f /etc/pf.conf
+{% highlight shell %}
+# pfctl -f /etc/pf.conf
+{% endhighlight %}
 
 # sshguard #
 
 Having a general firewall is good, it could be usefull to do some automated log analysis and defense. For that you can use the same mollyguard tool as under linux system, or you can use `sshguard` who has an native `pf` integration:
 
-    root@frb:~ # pkg install sshguard-pf
-    Updating FreeBSD repository catalogue...
-    [test] Fetching meta.txz: 100%    944 B   0.9kB/s    00:01
-    [test] Fetching packagesite.txz: 100%    6 MiB   5.9MB/s    00:01
-    Processing entries: 100%
-    FreeBSD repository update completed. 25860 packages processed.
-    The following 1 package(s) will be affected (of 0 checked):
+{% highlight shell %}
+root@frb:~ # pkg install sshguard-pf
+Updating FreeBSD repository catalogue...
+[test] Fetching meta.txz: 100%    944 B   0.9kB/s    00:01
+[test] Fetching packagesite.txz: 100%    6 MiB   5.9MB/s    00:01
+Processing entries: 100%
+FreeBSD repository update completed. 25860 packages processed.
+The following 1 package(s) will be affected (of 0 checked):
 
-    New packages to be INSTALLED:
-            sshguard-pf: 1.7.0_1
+New packages to be INSTALLED:
+        sshguard-pf: 1.7.0_1
 
-    Number of packages to be installed: 1
+Number of packages to be installed: 1
 
-    The process will require 2 MiB more space.
-    320 KiB to be downloaded.
+The process will require 2 MiB more space.
+320 KiB to be downloaded.
 
-    Proceed with this action? [y/N]: y
-    [frb] Fetching sshguard-pf-1.7.0_1.txz: 100%  320 KiB 327.7kB/s    00:01
-    Checking integrity... done (0 conflicting)
-    [frb] [1/1] Installing sshguard-pf-1.7.0_1...
-    [frb] [1/1] Extracting sshguard-pf-1.7.0_1: 100%
-    Message from sshguard-pf-1.7.0_1:
-    ##########################################################################
-      Sshguard installed successfully.
+Proceed with this action? [y/N]: y
+[frb] Fetching sshguard-pf-1.7.0_1.txz: 100%  320 KiB 327.7kB/s    00:01
+Checking integrity... done (0 conflicting)
+[frb] [1/1] Installing sshguard-pf-1.7.0_1...
+[frb] [1/1] Extracting sshguard-pf-1.7.0_1: 100%
+Message from sshguard-pf-1.7.0_1:
+##########################################################################
+  Sshguard installed successfully.
 
-      To activate or configure PF see http://www.sshguard.net/docs/setup/firewall/pf/
+  To activate or configure PF see http://www.sshguard.net/docs/setup/firewall/pf/
 
-      You can start sshguard as a daemon by using the
-      rc.d script installed at /usr/local/etc/rc.d/sshguard .
+  You can start sshguard as a daemon by using the
+  rc.d script installed at /usr/local/etc/rc.d/sshguard .
 
-      See sshguard(8) and http://www.sshguard.net/docs/setup for additional info.
+  See sshguard(8) and http://www.sshguard.net/docs/setup for additional info.
 
-      Please note that a few rc script parameters have been renamed to
-      better reflect the documentation:
+  Please note that a few rc script parameters have been renamed to
+  better reflect the documentation:
 
-      sshguard_safety_thresh -> sshguard_danger_thresh
-      sshguard_pardon_min_interval -> sshguard_release_interval
-      sshguard_prescribe_interval -> sshguard_reset_interval
-    ##########################################################################
+  sshguard_safety_thresh -> sshguard_danger_thresh
+  sshguard_pardon_min_interval -> sshguard_release_interval
+  sshguard_prescribe_interval -> sshguard_reset_interval
+##########################################################################
+{% endhighlight %}
 
 Next step is simply activating the service in *rc.conf*, manually or by using `sysrc`:
-> sysrc sshguard_enable="YES"
+{% highlight shell %}
+# sysrc sshguard_enable="YES"
+{% endhighlight %}
 
 And starting up the service:
-> service sshguard start
+{% highlight shell %}
+# service sshguard start
+{% endhighlight %}
 
 You can then look for sshguard message in */var/log/message* and inspect the deny table using:
-> pfctl -t sshguard -T show
+{% highlight shell %}
+# pfctl -t sshguard -T show
+{% endhighlight %}
 
 NB setting up a few IPs addresses in */usr/local/etc/sshguard.whitelist* might be a good idea.
