@@ -16,8 +16,8 @@ So, we have to play with FreeBSD firewall solution: *PF*, as in *Packet Filter*.
 
 So first thing is to setup a few rules in the */etc/pf.conf* file:
 
-    pub="62.210.247.118" # Host public IPv4 address
-    pub6="2001:bc8:2909:yyy::1" # Host public IPv6 address
+    pub="192.0.2.1" # Host public IPv4 address
+    pub6="2001:db8:1::1" # Host public IPv6 address
 
     if="bge0"
 
