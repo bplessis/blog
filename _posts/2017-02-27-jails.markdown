@@ -1,0 +1,148 @@
+---
+layout: post
+title:  "Setting up jails"
+categories: freebsd
+---
+
+The main idea of this new setup is to try and isolate services for the main host, which should be only used for management.
+
+So every service will be run in it's own context, known as *jails* in the Free/Net/OpenBSD lingua.
+
+However a few helping services on the host might be usefull, for DNS resolving, log collection, ...
+
+Service IP
+==========
+
+Since i don't own a lot of IPv4 public adresses, some a private IPv4 network will be used for accessing services in this network familly, and some NAT will have to be set.
+
+However online is being generous with IPv6 block so i can use a direct IPv6 connection.
+
+To do so, i'll use a dedicated loopback address, by adding the following to the *rc.conf* file:
+{% highlight shell %}
+cloned_interfaces="lo1"
+ifconfig_lo1="up 10.0.2.1/24"
+ifconfig_lo1_ipv6="inet6 2001:d8:1:101:0:0:1/64"
+
+# setting syslog to listen on the internal loopback address and allowing inbound from the jail net:
+syslogd_flags="-a 10.0.2.1/24 -b 10.0.2.1 -C"
+{% endhighlight %}
+
+The pf configuration from the previous post will have to be modified, to add so outbound NAT, and allow IPv6 outbound trafic for the jails:
+{% highlight shell %}
+# Define variable for jails networks
+jail_net="10.0.2.0/24"
+jail_net6="2001:d8:1:101::/64"
+
+[...]
+
+ # 4: Translation
+ # Translate IPv4 adresses belonging to the private jail net on the public interface
+ nat on $if from $jail_net to any -> $if
+
+ # 5 Filtering
+ # default outbound
+ [...]
+ # Allow ipv6 outbound packet from the jail ipv6 network
+ pass out quick on $if from $jail_net6 to any
+{% endhighlight %}
+
+Reloading the pf configuration is done by :
+{% highlight shell %}
+root@frb:~ # pfctl -nf /etc/pf.conf
+{% endhighlight %}
+
+
+DNS Resolver
+============
+
+FreeBSD use the unbound resolver by default, by the default configuration won't match our need. By default unbound will bind on 127.0.0.1:53 but we need him to listen on our jails 'gateway'.
+
+So we add a */etc/unbound/conf.d/interface.conf* with the following content:
+{% highlight shell %}
+server:
+        # Listen to loopback / jails loopback address
+        interface: 127.0.0.1
+        interface: 10.0.2.1
+        interface: 2001:d8:1:101::1
+        access-control: 10.0.0.0/8 allow
+        access-control: 2001:bc8:1:100::/56 allow
+{% endhighlight %}
+
+This forces unbound to listen on all the IP addresses we need, and all dns query from the jails.
+
+{% highlight shell %}
+root@frb:~ # service local_unbound restart
+{% endhighlight %}
+
+
+Setting-up EzJail
+=================
+
+As i'm no FreeBSD expert, even a newbie, creating jails manually from scratch wasn't an option i looked forward to ;) so in search to alternatives EzJail looked interesting, being integrated with ZFS and "space-friendly".
+
+EzJail works by initialising a shared "basejail" which is later on null-mounted (FreeBSD's version of linux 'bind') in each jails /basejail directory. and a "newjail" directory which is the base template of all futur jails.
+
+You can also use "flavours" to pre-set some files on the jails, be wary of the permissions of files and directory on thoses flavors however, they will be replicated on the jails !
+
+My flavor for example automatically set the syslog.conf to log remotly on the host, the resolver, disable sendmail, etc ...
+
+A few options are necessary on the */usr/local/etc/ezjail.conf* to activate the ZFS options:
+{% highlight shell %}
+# Setting this to YES will start to manage the basejail and newjail in ZFS
+ezjail_use_zfs="YES"
+
+# Setting this to YES will manage ALL new jails in their own zfs
+ezjail_use_zfs_for_jails="YES"
+
+# The name of the ZFS ezjail should create jails on, it will be mounted at the ezjail_jaildir
+ezjail_jailzfs="zroot/ezjail"
+{% endhighlight %}
+
+Creating the first Jail
+=======================
+
+{% highlight shell %}
+
+root@frb:~ # ezjail-admin create ns3 'lo1|10.0.2.1,lo1|2001:d8:1:101::1'
+/usr/jails/ns3/.
+/usr/jails/ns3/./etc
+/usr/jails/ns3/./etc/rc.conf
+/usr/jails/ns3/./etc/rc.d
+/usr/jails/ns3/./etc/rc.d/ezjail.mine
+/usr/jails/ns3/./etc/periodic.conf
+/usr/jails/ns3/./etc/syslog.conf
+/usr/jails/ns3/./etc/resolv.conf
+/usr/jails/ns3/./etc/crontab
+8 blocks
+find: /usr/jails/ns3/pkg/: No such file or directory
+Warning: Some services already seem to be listening on all IP, (including 10.10.2.20)
+  This may cause some confusion, here they are:
+root     master     978   13 tcp4   *:25                  *:*
+root     ntpd       884   20 udp6   *:123                 *:*
+root     ntpd       884   21 udp4   *:123                 *:*
+root     dhcp6c     770   4  udp6   *:546                 *:*
+{% endhighlight %}
+
+{% highlight shell %}
+root@frb:~ # ezjail-admin start ns3
+root@frb:~ # ezjail-admin console ns3
+root@ns3:~ #
+{% endhighlight %}
+
+Enjoy your micro-vm/container/whatever ;)
+
+Update from august:
+
+Updating Jails
+=======================
+
+To the latest patch:
+
+{% highlight shell %}
+root@frb:~ # ezjail-admin -u
+{% endhighlight %}
+
+Upgrading to the current host version (need to specify the 'source' version):
+{% highlight shell %}
+root@frb:~ # ezjail-admin -U -s 11.0-RELEASE
+{% endhighlight %}
