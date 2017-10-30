@@ -16,19 +16,25 @@ I needed to make a backup of the old system, not wanting to reinstall everything
 
 1/ a backup of the geometry:
 
-  gpart backup ada0 > /var/tmp/backup.geom
+{% highlight shell %}
+root@frb:~# gpart backup ada0 > /var/tmp/backup.geom
+{% endhighlight %}
 
 which gave me something like that:
 
+{% highlight shell %}
   GPT 152
   1   freebsd-boot         40       1024
   2   freebsd-swap       2048    4194304 swap0
   3   freebsd-zfs    4196352 1949327360 zfs0
+{% endhighlight %}
 
 2/ a backup of the filesystem:
 
-  zfs snapshot -r zroot@sunday_20171029
-  zfs send -R zroot@sunday_20171029 > /var/tmp/backup.zfs
+{% highlight shell %}
+root@frb:~# zfs snapshot -r zroot@sunday_20171029
+root@frb:~# zfs send -R zroot@sunday_20171029 > /var/tmp/backup.zfs
+{% endhighlight %}
 
 And voila ! i just had to put this two file over an ftp server.
 
@@ -42,25 +48,35 @@ When the freebsd/rescue is booted /tmp is mounted as a tmpfs, lucky me the memor
 
 The drives where re-partitionned using:
 
-  gpart restore -F -l ada0 < backup.geom
-  gpart restore -F ada1 < backup.geom
-  gpart modify -i 2 -l swap1 ada1
-  gpart modify -i 3 -l zfs1 ada1
+{% highlight shell %}
+root@frb:~# gpart restore -F -l ada0 < backup.geom
+root@frb:~# gpart restore -F ada1 < backup.geom
+root@frb:~# gpart modify -i 2 -l swap1 ada1
+root@frb:~# gpart modify -i 3 -l zfs1 ada1
+{% endhighlight %}
 
 Boot code was installed using:
 
-  gpart bootcode -b /boot/pmbr -p /boot/gptzfsboot -i 1 ada0
-  gpart bootcode -b /boot/pmbr -p /boot/gptzfsboot -i 1 ada1
+{% highlight shell %}
+root@frb:~# gpart bootcode -b /boot/pmbr -p /boot/gptzfsboot -i 1 ada0
+root@frb:~# gpart bootcode -b /boot/pmbr -p /boot/gptzfsboot -i 1 ada1
+{% endhighlight %}
 
-the /only/ thing left was .. the file system, this get a bit tricky and it took quite a bit to get it done right but the process should be only:
+Apparently the swap took care of itself ;)
 
-  zpool create zroot mirror gpt/zfs0 gpt/zfs1
-  zfs recv zroot < backup.zfs
-  zpool set bootfs=zroot/ROOT/default zroot
+The /only/ thing left was .. the file system, this get a bit tricky and it took quite a bit to get it done right but the process should be only:
+
+{% highlight shell %}
+root@frb:~# zpool create zroot mirror gpt/zfs0 gpt/zfs1
+root@frb:~# zfs recv zroot < backup.zfs
+root@frb:~# zpool set bootfs=zroot/ROOT/default zroot
+{% endhighlight %}
 
 If, like me, you had to restart the server in rescue mode because the first boot didn't get you there, there is a few interesting command to consider:
 
-  zpool import -R /mnt zroot
-  mount -t zfs zroot/ROOT/default /altroot
+{% highlight shell %}
+root@frb:~# zpool import -R /mnt zroot
+root@frb:~# mount -t zfs zroot/ROOT/default /altroot
+{% endhighlight %}
 
 anyway, short things short the new server was up and running after only a 15 minutes service interruption !
