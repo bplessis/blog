@@ -39,6 +39,11 @@ sass:
 
 assets:
   gzip: true
+  plugins:
+    img:
+      optim:
+        jekyll:
+          jpegrecompress: false
 
 gems:
   - jemoji

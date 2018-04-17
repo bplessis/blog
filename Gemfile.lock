@@ -24,6 +24,7 @@ GEM
       http_parser.rb (~> 0.6.0)
     eventmachine (1.2.5)
     execjs (2.7.0)
+    exifr (1.3.3)
     extras (0.3.0)
       forwardable-extended (~> 2.5)
     fastimage (2.1.1)
@@ -31,6 +32,7 @@ GEM
     font-awesome-sass (5.0.9)
       sass (>= 3.2)
     forwardable-extended (2.6.0)
+    fspath (3.1.0)
     gemoji (2.1.0)
     html-pipeline (2.7.1)
       activesupport (>= 2)
@@ -38,6 +40,14 @@ GEM
     http_parser.rb (0.6.0)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
+    image_optim (0.26.1)
+      exifr (~> 1.2, >= 1.2.2)
+      fspath (~> 3.0)
+      image_size (~> 1.5)
+      in_threads (~> 1.3)
+      progress (~> 3.0, >= 3.0.1)
+    image_size (1.5.0)
+    in_threads (1.5.0)
     jekyll (3.7.3)
       addressable (~> 2.4)
       colorator (~> 1.0)
@@ -88,6 +98,7 @@ GEM
       mini_portile2 (~> 2.3.0)
     pathutil (0.16.1)
       forwardable-extended (~> 2.6)
+    progress (3.4.0)
     public_suffix (3.0.2)
     rack (2.0.4)
     rb-fsevent (0.10.3)
@@ -117,6 +128,7 @@ DEPENDENCIES
   bootstrap-sass
   coffee-script
   font-awesome-sass
+  image_optim
   jekyll
   jekyll-assets
   jemoji

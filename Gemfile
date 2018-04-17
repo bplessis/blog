@@ -19,4 +19,6 @@ gem "sass"          # And we want to write our stylesheets using SCSS/SASS
 gem "bootstrap-sass"
 gem "font-awesome-sass"
 
+gem "image_optim"
+
 gem "jemoji"
