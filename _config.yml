@@ -25,11 +25,33 @@ kramdown:
   input: GFM
   syntax_highlighter: rouge
 
+compress_html:
+  clippings: all
+  comments: ["<!-- ", " -->"]
+  endings: [html, head, body, li, dt, dd, rt, rp, optgroup, option, colgroup, caption, thead, tbody, tfoot, tr, td, th]
+  profile: false
+  blanklines: false
+  ignore:
+    envs: []
+
+sass:
+  style: compressed
+
+assets:
+  gzip: true
+
 gems:
   - jemoji
+  - jekyll-assets
+  - bootstrap-sass
+
 exclude:
   - "README.md"
   - "CHANGELOG.md"
   - "CNAME"
   - "Gemfile"
   - "Gemfile.lock"
+  - .gitignore
+  - .bundle
+  - .git
+  - vendor

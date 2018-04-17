@@ -77,9 +77,9 @@ $pre-color: #1abc9c;
 $pre-bg: #34495e;
 $headings-color: #333;
 
-// http://flatuicolors.com/
+/* http://flatuicolors.com/ */
 $dark: #3d566e;
-$dark-brand-primary: #5b7fa4; // Set saturation to 50
+$dark-brand-primary: #5b7fa4; /* Set saturation to 50 */
 $turquoise: #1abc9c;
 $green: #2ecc71;
 $blue: #3498db;
@@ -87,7 +87,7 @@ $purple: #9b59b6;
 $orange: #e67e22;
 $red: #e74c3c;
 
-{% unless site.data.theme.color == "default" %}
+/* unless site.data.theme.color == "default"
   $theme-color: ${{ site.data.theme.color }};
   $navbar-inverse-bg: $theme-color;
   @if $theme-color == $dark {
@@ -95,10 +95,19 @@ $red: #e74c3c;
   } @else {
     $brand-primary: $theme-color;
   }
-{% endunless %}
+ endunless */
+
+$theme-color: $blue;
+$navbar-inverse-bg: $theme-color;
+@if $theme-color == $dark {
+    $brand-primary: $dark-brand-primary;
+} @else {
+    $brand-primary: $theme-color;
+}
 
 @import "custom-bootstrap-variables";
-@import "bootstrap-sass/bootstrap";
+/* import "bootstrap-sass/bootstrap"; */
+@import "_bootstrap";
 
 $space-xs: $line-height-computed * 1;
 $space-sm: $line-height-computed * 1.5;
@@ -232,3 +241,7 @@ h3 {
 }
 
 @import "custom-scss";
+
+/*@import 'bootstrap';*/
+@import "font-awesome-sprockets";
+@import "font-awesome";
