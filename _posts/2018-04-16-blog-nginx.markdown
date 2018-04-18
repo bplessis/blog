@@ -21,7 +21,7 @@ Well not everything was bad, at least SSL was working OK and even more so HTTP/2
 
 As said previously this is an experementation server, so as if using FreeBSD wasn't enough i also used nginx on many services, so there is that i didn't look over levergage browser cache, compressing stream,.. So there is the job for today.
 
-The starting point is a pretty straightforward configuration, i have setup two server block, one for the http service with a forced 301 redirect over HTTPS url and the second for the HTTPS service. Only peculiarity is the IPv4 private IP that is used, having only one IPv4 address has made me a little ""creative"" and so i'm using an haproxy redirect service which allow real source IP preservation, even with SSL stream using special protocol:
+The starting point is a pretty straightforward configuration, i have setup two server block, one for the http service with a forced 301 redirect over HTTPS url and the second for the HTTPS service. Only peculiarity is the IPv4 private IP that is used, having only one IPv4 address has made me a little "creative" and so i'm using an haproxy redirect service which allow real source IP preservation, even with SSL stream using special protocol:
 {% highlight nginx %}
    server {
         listen       10.x.y.z:80       proxy_protocol;
