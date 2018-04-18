@@ -7,7 +7,7 @@
 
 # Site settings
 title: Silmaril's Blog
-email: blog@plessis.info
+email: benoit_AT_plessis_DOT_info
 description: > # this means to ignore newlines until "baseurl:"
   Simple sysadmin notes and thought on the world, Yeah no just kidding,
   some less than special rant and diary.
@@ -28,11 +28,11 @@ kramdown:
 compress_html:
   clippings: all
   comments: ["<!-- ", " -->"]
-  endings: [html, head, body, li, dt, dd, rt, rp, optgroup, option, colgroup, caption, thead, tbody, tfoot, tr, td, th]
+#  endings: [html, head, body, li, dt, dd, rt, rp, optgroup, option, colgroup, caption, thead, tbody, tfoot, tr, td, th]
   profile: false
   blanklines: false
   ignore:
-    envs: []
+    envs: [local, dev, developpment]
 
 sass:
   style: compressed
