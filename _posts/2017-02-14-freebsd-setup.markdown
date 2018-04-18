@@ -19,7 +19,7 @@ root@frb:~ # freebsd-update fetch
 root@frb:~ # freebsd-update install
 {% endhighlight %}
 
-# Additionnal Software #
+# Additional Software #
 
 Contrary to Linux Distributions, at least thoses like debian, freebsd by itself is relatively small. But there is a huge collection of additionnal software available in two differents forms, the *port* system, and the *pkg* repository. The *port* system is basicaly a collection of build process to build software from source with all required dependencies and integrate it on the freebsd system. The *pkg* repository is a binary form distribution, which also take care of dependency handling.
 
