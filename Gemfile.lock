@@ -10,9 +10,10 @@ GEM
       public_suffix (>= 2.0.2, < 4.0)
     autoprefixer-rails (8.3.0)
       execjs
-    bootstrap-sass (3.3.7)
-      autoprefixer-rails (>= 5.2.1)
-      sass (>= 3.3.4)
+    bootstrap (4.1.0)
+      autoprefixer-rails (>= 6.0.3)
+      popper_js (>= 1.12.9, < 2)
+      sass (>= 3.5.2)
     coffee-script (2.4.1)
       coffee-script-source
       execjs
@@ -98,6 +99,7 @@ GEM
       mini_portile2 (~> 2.3.0)
     pathutil (0.16.1)
       forwardable-extended (~> 2.6)
+    popper_js (1.12.9)
     progress (3.4.0)
     public_suffix (3.0.2)
     rack (2.0.4)
@@ -125,7 +127,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bootstrap-sass
+  bootstrap
   coffee-script
   font-awesome-sass
   image_optim

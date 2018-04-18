@@ -5,38 +5,20 @@ layout: compress
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-
-      <title>{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</title>
-      <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description | strip_newlines }}{% endif %}">
-
-      {% asset main.css %}
-      <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
-      <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}">
-      <link rel="shortcut icon" href="{{ "/favicon.ico" | prepend:site.baseurl }}">
-      {% include head.html %}
-    </head>
+    {% include head.html %}
+    {% asset inline.css @inline %}
+  </head>
   <body>
-  {% if site.data.theme.color == "default" %}
-    <div class="navbar navbar-default navbar-static-top">
-  {% else %}
-    <div class="navbar navbar-inverse navbar-static-top">
-  {% endif %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary navbar-static-top">
       <div class="container">
-        <div class="navbar-header">
-          <div class="navbar-toggle-wrapper visible-xs">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-          </div>
-          <a href="{{ "/" | prepend:site.baseurl }}" class="navbar-brand">{{ site.title }}</a>
-        </div>
-        <div class="collapse navbar-collapse js-navbar-collapse">
-          <ul class="navbar-nav nav" data-purplecoat="shiori" data-purplecoat-label="nav.html">
+        <a  class="navbar-brand" href="{{ "/" | prepend:site.baseurl }}">{{ site.title }}</a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto" data-purplecoat="shiori" data-purplecoat-label="nav.html">
             {% include nav.html %}
           </ul>
           <ul class="navbar-nav nav navbar-right" data-purplecoat="shiori" data-purplecoat-label="nav-right.html">
@@ -44,7 +26,7 @@ layout: compress
           </ul>
         </div>
       </div>
-    </div>
+    </nav>
     <div class="container">
       <div class="row">
         {% if page.hide_sidebar or site.data.theme.hide_sidebar %}
@@ -66,8 +48,8 @@ layout: compress
         </div>
       </div>
     </div>
+    {% asset main.css %}
     {% include scripts.html %}
-    <link href="//fonts.googleapis.com/css?family=Montserrat:700,400" rel="stylesheet" type="text/css">
-    <link href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic" rel="stylesheet" type="text/css">
+    {% include fonts.html %}
   </body>
 </html>

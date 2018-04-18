@@ -1,5 +1,19 @@
+---
+# Critical CSS inlined in <head>
+---
+@charset "utf-8";
+
+@import "variables";
+
 // Add your own custom CSS here.
 @import "pygments-tomorrow";
+
+pre {
+    background-color: $pre-bg;
+    padding: 13px;
+    margin: 0 0 13.5px;
+    font-size: 14px;
+}
 
 /**
  * Icons

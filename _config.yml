@@ -48,7 +48,6 @@ assets:
 gems:
   - jemoji
   - jekyll-assets
-  - bootstrap-sass
 
 exclude:
   - "README.md"
