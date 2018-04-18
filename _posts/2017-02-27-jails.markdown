@@ -1,7 +1,8 @@
 ---
 layout: post
 title:  "Setting up jails"
-categories: freebsd
+categories: blog
+tags: freebsd
 ---
 
 The main idea of this new setup is to try and isolate services for the main host, which should be only used for management.

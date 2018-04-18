@@ -1,7 +1,8 @@
 ---
 layout: post
 title:  "Firewalling: PF"
-categories: freebsd
+categories: blog
+tags: freebsd
 ---
 
 So, now we have some basis of a working system.

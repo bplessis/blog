@@ -2,7 +2,7 @@
 layout: post
 title:  "Hello, World !"
 date:   2017-02-06 22:10:00 +0100
-categories: jekyll freebsd update
+categories: blog
 ---
 
 Hi,

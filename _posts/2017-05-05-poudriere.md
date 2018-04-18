@@ -1,7 +1,8 @@
 ---
 layout: post
 title:  "Poudriere"
-categories: freebsd
+categories: blog
+tags: freebsd
 ---
 
 In some cases you might need to use some customisation over the standard pre-built packages repository. Two choices there: you can either manually build them using the *ports* system on each of your jails/servers, or you can make a custom pkg repository with your build options.

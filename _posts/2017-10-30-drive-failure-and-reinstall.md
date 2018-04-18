@@ -1,7 +1,8 @@
 ---
 layout: post
 title:  "Drive Failure and reinstall"
-categories: freebsd
+categories: blog
+tags: freebsd
 ---
 
 Hi,

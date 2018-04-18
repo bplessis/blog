@@ -2,7 +2,8 @@
 layout: post
 title:  "Installation Time"
 date:   2017-02-06 22:40:00 +0100
-categories: freebsd
+categories: blog
+tags: freebsd
 ---
 
 Hi there,

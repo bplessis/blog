@@ -1,7 +1,8 @@
 ---
 layout: post
 title:  "Configuration Time"
-categories: freebsd
+categories: blog
+tags: freebsd
 ---
 
 Hi there,
