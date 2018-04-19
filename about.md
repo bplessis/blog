@@ -19,19 +19,18 @@ I am currently head of system and network infrastructure at [Doyousoft](https://
 
 * Horses
 
-* I'm also an amateur photograph
-https://500px.com/silmaril
+* I'm also an amateur photograph [500px](https://500px.com/silmaril)
 
 # Contacts
 
 * Social Medias:
- * [@Silmaril](https://twitter.com/silmaril34)
- * [LinkedIn](https://www.linkedin.com/in/benoit-plessis-4359041/ "LinkedIn Profil")
- * [Facebook (for friends and family)](https://www.facebook.com/benoit.plessis.5)
+  * [@Silmaril](https://twitter.com/silmaril34)
+  * [LinkedIn](https://www.linkedin.com/in/benoit-plessis-4359041/ "LinkedIn Profil")
+  * [Facebook (for friends and family)](https://www.facebook.com/benoit.plessis.5)
 
 * Email
- * Personnal address [benoit AT plessis DOT info](mailto:benoit_AT_plessis_DOT_info)
- * Work address [benoit AT doyousoft DOT com][mailto;benoit_AT_doyousoft_DOT_com]
+  * Personnal address [benoit AT plessis DOT info](mailto:benoit_AT_plessis_DOT_info)
+  * Work address [benoit AT doyousoft DOT com](mailto:benoit_AT_doyousoft_DOT_com)
 
 # GPG
 
