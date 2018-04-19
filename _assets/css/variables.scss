@@ -101,3 +101,6 @@ $navbar-inverse-bg: $theme-color;
 } @else {
     $brand-primary: $theme-color;
 }
+
+@import "bootstrap/functions";
+@import "bootstrap/variables";
