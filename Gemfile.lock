@@ -49,7 +49,7 @@ GEM
       progress (~> 3.0, >= 3.0.1)
     image_size (1.5.0)
     in_threads (1.5.0)
-    jekyll (3.7.3)
+    jekyll (3.8.0)
       addressable (~> 2.4)
       colorator (~> 1.0)
       em-websocket (~> 0.5)
@@ -120,7 +120,7 @@ GEM
     thread_safe (0.3.6)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
-    uglifier (4.1.9)
+    uglifier (4.1.10)
       execjs (>= 0.3.0, < 3)
 
 PLATFORMS
