@@ -13,7 +13,16 @@ Friends's stuff:
 
 * [Bapt's Blog](http://blog.etoilebsd.net/)
 
+* [Neuro's Blog](https://thoughts.t37.net/)
+
+* [Renchap's Blog](https://renchap.com/blog/)
+
 Usefull stuff:
 
-* [Debian](https://www.debian.org/)
-* [FreeBSD](https://www.freebsd.org/)
+* OS:
+  * [Debian](https://www.debian.org/)
+  * [FreeBSD](https://www.freebsd.org/)
+
+* Photo
+  * [Fred Miranda](http://www.fredmiranda.com/)
+  * [Talegraph](https://www.talegraph.com/)
