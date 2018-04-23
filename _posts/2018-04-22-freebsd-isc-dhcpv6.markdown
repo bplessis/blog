@@ -65,51 +65,6 @@ load_rc_config ${name}
 run_rc_command "$1"
 {% endhighlight %}
 
-{% highlight shell %}
-#!/bin/sh
-#
-# PROVIDE: dhclient6
-# REQUIRE: DAEMON
-# KEYWORD: dhcp
-#
-# Add the following lines to /etc/rc.conf to enable dhclient6:
-#
-# dhclient6_enable="YES"
-#
-
-. /etc/rc.subr
-
-name="dhclient6"
-desc="ISC DHCPv6 client"
-rcvar="dhclient6_enable"
-
-start_cmd="dhclient6_start"
-stop_cmd="dhclient6_stop"
-
-dhclient6_start()
-{
-          /usr/local/sbin/dhclient -cf "${dhclient6_conf}" -P -v "${dhclient6_iface}"
-
-}
-
-dhclient6_stop()
-{ 
-  if [ -r "${dhclient6_pid}" ]
-  then
-    kill -- -$(cat "${dhclient6_pid}")
-    rm -f "${dhclient6_pid}"
-  fi
-}
-
-load_rc_config ${name}
-
-: ${dhclient6_enable="NO"}
-: ${dhclient6_pid="/var/run/dhclient6.pid"}
-: ${dhclient6_conf="/usr/local/etc/dhclient6.conf"}
-: ${dhclient6_iface=""}
-
-run_rc_command "$1"
-{% endhighlight %}
 
 # Configuration
 
