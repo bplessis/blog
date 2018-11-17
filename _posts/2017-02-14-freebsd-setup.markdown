@@ -170,7 +170,7 @@ root@frb:~ # cap_mkdb /etc/login.conf
 
 ## IPv6 ##
 
-FreeBSD support notively IPv6 networking, however online IP allocation system require a special setup. I used <http://barfooze.de/stuff/online_ipv6.txt> as reference / starting point.
+FreeBSD support natively IPv6 networking, however online IP allocation system require a special setup. I used <http://barfooze.de/stuff/online_ipv6.txt> as reference / starting point.
 
 Start by installing dhcp6c from the ports collection / pkg repository:
 
