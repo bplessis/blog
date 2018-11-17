@@ -65,7 +65,7 @@ root@frb:~# gpart bootcode -b /boot/pmbr -p /boot/gptzfsboot -i 1 ada1
 
 Apparently the swap took care of itself ;)
 
-The /only/ thing left was .. the file system, this get a bit tricky and it took quite a bit to get it done right but the process should be only:
+The *only* thing left was .. the file system, this get a bit tricky and it took quite a bit to get it done right but the process should be only:
 
 {% highlight shell %}
 root@frb:~# zpool create zroot mirror gpt/zfs0 gpt/zfs1
