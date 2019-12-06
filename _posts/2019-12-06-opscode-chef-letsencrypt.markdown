@@ -106,9 +106,9 @@ And there you go !
 
 ... Well almost ^^ we still have a bit of setup to do.
 
-Nous avons trois fichiers à créer: la configuration 'globale', la liste des domaines à entretenir et le script des hooks qui redemarrera chef-server lors de l'obtention d'un nouveau certificat.
+So we have three files to create: the global configuration, the domain list and the hook script who will take care of restarting chef-server when needed.
 
-Pour la configuration globale (chemin de base /usr/local/etc/dehydrated/config), nous avons principalement trois variables à définir: CONTACT_EMAIL pour le suivi du certificat, WELLKNOWN qui indique le dossier de base dans lequel seront créés les challenges et HOOK pour definir le chemin du script des hooks, exemple:
+For the global configuration (default path /usr/local/etc/dehydrated/config), i mostly setup the bare minimum: CONTACT_EMAIL for the account creation / mail notifications from LE, WELLKNOWN which is the path that will publish the challenges and HOOK to define our custom-made scripts, exemple:
 
 {% highlight shell %}
 root@chef:~ # cat > /usr/local/etc/dehydrated/config << EOF
@@ -118,13 +118,13 @@ HOOK=/usr/local/sbin/le-hook.sh
 EOF
 {% endhighlight %}
 
-Pour le domaine si comme moi vous utilisez le nom de la machine il y a une solution simple:
+For the ssl domain, if as i did you only need the host name there is an easy way:
 {% highlight shell %}
 root@chef:~ # hostname -f >| /usr/local/etc/dehydrated/domains.txt
 {% endhighlight %}
-Sinon il suffit de rentrer votre domaine dans '/usr/local/etc/dehydrated/domains.txt'.
+If not you'll need to fire-up your favorite EDITOR (echo or cat, as you wish ^^) and create '/usr/local/etc/dehydrated/domains.txt'.
 
-Pour le script de hook, voici un exemple:
+And as for the hook script there is a base for you to extend if you want:
 
 {% highlight shell %}
 root@chef:~ # cat > /usr/local/sbin/le-hook.sh << EOF
@@ -173,21 +173,24 @@ fi
 EOF
 {% endhighlight %}
 
-## Creation du certificat
+## Certificate generation
 
+Easy enough, you only need to register the account (once) and trigger a first run of dehydrated using "-c":
 {% highlight shell %}
 root@chef:~ # /usr/local/sbin/dehydrated --register --accept-terms
 root@chef:~ # /usr/local/sbin/dehydrated -c
 {% endhighlight %}
 
-# Activation du certificat dans chef-server
+# Setting up the new certificate for chef-server
 
-/etc/opscode/chef-server.rb
+Easy enough, fire up this good old $EDITOR onto '/etc/opscode/chef-server.rb' and modify the two ssl_certificate/ssl_certificate_key attributes, exemple:
+
 {% highlight shell %}
 nginx['ssl_certificate']  = "/usr/local/etc/dehydrated/certs/chef.xxx.com/cert.pem"
 nginx['ssl_certificate_key']  = "/usr/local/etc/dehydrated/certs/chef.xxx.com/privkey.pem"
 {% endhighlight %}
 
+And reconfigure chef, which will also restart it:
 
 {% highlight shell %}
 root@chef:~ # chef-server-ctl reconfigure
