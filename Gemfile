@@ -6,7 +6,7 @@ gem "jekyll"
 # jekyll-assets plugin itself
 #
 
-gem "jekyll-assets"
+gem "jekyll-assets", '> 3.0.0'
 
 #
 # Additional gems for jekyll-assets

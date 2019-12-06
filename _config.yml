@@ -45,7 +45,7 @@ assets:
         jekyll:
           jpegrecompress: false
 
-gems:
+plugins:
   - jemoji
   - jekyll-assets
 
