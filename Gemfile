@@ -7,6 +7,7 @@ gem "jekyll"
 #
 
 gem "jekyll-assets", '> 3.0.0'
+gem "sprockets", '< 4.0.0'
 
 #
 # Additional gems for jekyll-assets
