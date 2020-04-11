@@ -64,7 +64,7 @@ root@localhost# ip addr add 192.0.2.30/32 dev lo
 
 Now that the service is avaible, time to make it highly !
 
-For this part we will be using [Exabgp 4.0+](https://github.com/Exa-Networks/exabgp), i used debian/buster package without issues, your mileage may vary.
+For this part we will be using [Exabgp 4.0+](https://github.com/Exa-Networks/exabgp), I used debian/buster package without issues, your mileage may vary.
 
 The idea is to make BGP session with your core BGP platform to publish /32 routes for each frontend, for this you'll need BGP-aware router (duh) and a BGP-aware speaker on your server (this will be exabgp's role).
 
@@ -100,11 +100,11 @@ neighbor 192.0.2.3 {
 }
 {% endhighlight %}
 
-PS: This is more of a manual optimized configuration, when deploying with configuration management i ended with a ["flattened"](/assets/files/2020/02/exabgp.conf) configuration.
+PS: This is more of a manual optimized configuration, when deploying with configuration management I ended with a ["flattened"](/assets/files/2020/02/exabgp.conf) configuration.
 
 ## Configuration BGP Router
 
-This part will highly depend on your network's technology, you'll need to setup eBGP links with your LB hosts, i also added a few safeguard with an empty export policy (exabgp doesn't need info from the routing in my configuration) and an import policy that allow only /32 routes over my network:
+This part will highly depend on your network's technology, you'll need to setup eBGP links with your LB hosts, I also added a few safeguard with an empty export policy (exabgp doesn't need info from the routing in my configuration) and an import policy that allow only /32 routes over my network:
 
 {% highlight shell %}
 set protocols bgp group lb type external
@@ -121,7 +121,7 @@ set policy-options policy-statement bgp_filter_exabgp term 10 then reject
 
 ## Service
 
-The default systemd unit for exabgp/debian is a bit limited so i added some override to create the fifo used to interrogate the daemon from CLI.
+The default systemd unit for exabgp/debian is a bit limited so I added some override to create the fifo used to interrogate the daemon from CLI.
 
 {% highlight shell %}
 [Service]
