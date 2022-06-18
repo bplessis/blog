@@ -1,0 +1,22 @@
+{{ define "main" }}
+
+<article id="content">
+  {{ .Content }}
+</article>
+<hr/>
+
+<nav id="timenav">
+<div id="previnsection">
+  <h3>Older</h3>
+  {{ with .PrevInSection }}
+  {{ partial "posts/short.html" . }}
+  {{ end }}
+</div>
+<div id="nextinsection">
+  <h3>Newer</h3>
+  {{ with .NextInSection }}
+  {{ partial "posts/short.html" . }}
+  {{ end }}
+</div>
+</nav>
+{{ end }}
