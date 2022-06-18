@@ -2,6 +2,7 @@
 date: "2017-02-27T00:00:00Z"
 tags: ["freebsd"]
 title: Setting up jails
+slug: jails
 ---
 
 The main idea of this new setup is to try and isolate services for the main host, which should be only used for management.

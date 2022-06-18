@@ -2,6 +2,7 @@
 layout: post
 date: "2019-12-06T00:00:00Z"
 title:  Let's Encrypt Chef-Server
+slug: opscode chef letsencrypt
 tags: ["linux","chef-server","letsencrypt","ssl","dehydrated"]
 ---
 

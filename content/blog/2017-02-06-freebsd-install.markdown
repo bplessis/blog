@@ -2,6 +2,7 @@
 date: "2017-02-06T22:40:00Z"
 tags: [ "freebsd" ]
 title: Installation Time
+slug: freebsd install
 ---
 
 Hi there,

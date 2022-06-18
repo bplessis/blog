@@ -1,5 +1,6 @@
 ---
 date: "2018-04-16T00:00:00Z"
+slug: blog nginx
 tags: [ "freebsd", "nginx" ]
 title: Upgrading the blog, day 1
 ---

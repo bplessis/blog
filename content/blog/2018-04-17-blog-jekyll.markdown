@@ -2,6 +2,7 @@
 date: "2018-04-17T00:00:00Z"
 tags: [ "jekyll" ]
 title: Upgrading the blog, day 2
+slug: blog jekyll
 ---
 
 Last time up on setting up nginx to make PageSpeed Insight happy, we saw that tweaking the webserver wasn't enough, so now we will have to work on the content.

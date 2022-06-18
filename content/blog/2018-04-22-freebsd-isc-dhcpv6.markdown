@@ -2,6 +2,7 @@
 date: "2018-04-22T00:00:00Z"
 tags: [ "freebsd", "dhcp", "ipv6" ]
 title: FreeBSD DHCPv6
+slug: freebsd isc-dhcpv6
 ---
 
 In [FreeBSD Setup]({{< ref "2017-02-14-freebsd-setup" >}} "FreeBSD Setup") i detailed the use of KAME's dhcp client to authentify and request an IPv6 block to be routed onto the server.

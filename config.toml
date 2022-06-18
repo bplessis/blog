@@ -1,6 +1,6 @@
 # Hugo variables
 #
-relativeURLs = true
+#relativeURLs = true
 #baseURL = "https://blog.plessis.info"
 disablePathToLower = true
 
@@ -22,7 +22,7 @@ paginate = 10
 ignoreFiles = ['^\.#.*', '^#.*']
 
 [permalinks]
-  blog = "/:section/:year/:month/:day/:title/"
+  blog = "/:section/:year/:month/:day/:slug/"
   page = "/:slug/"
 
 [[menu.sidebar]]

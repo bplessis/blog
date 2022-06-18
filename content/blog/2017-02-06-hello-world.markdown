@@ -1,6 +1,7 @@
 ---
 date: "2017-02-06T22:10:00Z"
 title: Hello, World !
+slug: hello world
 ---
 
 Hi,

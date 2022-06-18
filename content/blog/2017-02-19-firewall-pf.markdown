@@ -2,6 +2,7 @@
 date: "2017-02-19T00:00:00Z"
 tags: [ "freebsd" ]
 title: 'Firewalling: PF'
+slug: firewall pf
 ---
 
 So, now we have some basis of a working system.
