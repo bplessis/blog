@@ -13,6 +13,9 @@ paginate = 10
 #googleAnalytics = "UA-123-45"
 #disqusShortname = "XYW"
 
+# try to ignore emacs lock and temporary files (not working)
+ignoreFiles = ['^\.#.*', '^#.*']
+
 [permalinks]
   post = "/:year/:month/:title/"
   page = "/:slug/"
