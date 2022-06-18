@@ -1,0 +1,4 @@
+/blog/:year/:month/:date/:slug.html /blog/:year/:month/:date/:slug/ 302
+/about/ /pages/about/
+/links/ /pages/links/
+/archives/index.html /blog/
