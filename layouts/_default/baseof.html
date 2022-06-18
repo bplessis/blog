@@ -9,12 +9,9 @@
     <title>{{ site.Title }}</title>
     {{ end }}
     <meta property="og:title" content="{{ site.Title }}" />
-    {{ $style := resources.Get "sass/main.scss" | resources.ToCSS | resources.Minify }}
-    <link rel="stylesheet" href="{{ $style.Permalink }}">
-    {{ $style := resources.Get "sass/syntax.css" | resources.Minify }}
+    {{ $style := resources.Match "sass/**.scss" | resources.Concat "main.scss" | resources.ToCSS | resources.Minify }}
     <link rel="stylesheet" href="{{ $style.Permalink }}">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Prompt:wght@700&display=swap" rel="stylesheet">
-
 </head>
 <body class="page">
   
