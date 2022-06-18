@@ -1,0 +1,19 @@
+{{ define "main" }}
+<header>
+  <h1>{{.Title}} Archives</h1>
+</header>
+
+  <div class="page-archives">
+  {{ $curMonthY := "" }}
+  {{ range .Pages.ByPublishDate.Reverse }}
+    {{ $postMonthY := .Date.Format "January 2006" }}
+    {{ if (ne $curMonthY $postMonthY) }}
+      {{ $curMonthY = $postMonthY }}
+      <h3 class="section-header-archives">{{ $postMonthY }}</h3>
+    {{ end }}
+    <p>
+      <a class="post-title-archive" href="{{ .Permalink }}">{{ .Title }}</a>
+      <small class="text-muted">{{ .Date | time.Format (default "January 2, 2006" .Site.Params.date_format) }}</small>
+    </p>
+  {{ end }}
+{{ end }}

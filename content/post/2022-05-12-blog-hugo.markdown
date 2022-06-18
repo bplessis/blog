@@ -1,0 +1,108 @@
+---
+categories: [ 'blog' ]
+date: "2022-05-12T00:00:00Z"
+tags: [ "hugo", "refactor" ]
+title: Upgrading the blog, day 360205
+---
+
+So ...
+Hi back i guess ? :)
+
+Years have passed, the previous engine setup proved unreliable, update to jekyll, ruby, and whatever keep breaking up the thing in all ways i could not even think of.
+Jekyll-assets particularly seem to have a pretty hard time keeping up with the ecosystem, so ... let's try another way i guess ?
+
+# Hugo #
+
+So i found this tool, Hugo, basically the same concept as jekyll but based on a go software, hopefully it would prove more reliable ?
+
+And there is even an import tool !
+{{< highlight shell >}}
+# hugo import jekyll blog blog-hugo
+Importing...
+Congratulations! 18 post(s) imported!
+Now, start Hugo by yourself:
+$ git clone https://github.com/spf13/herring-cove.git blog-hugo/themes/herring-cove
+$ cd blog-hugo
+$ hugo server --theme=herring-cove
+{{< / highlight >}}
+
+Noice !
+Continuing:
+
+{{< highlight shell >}}
+$ git clone https://github.com/spf13/herring-cove.git blog-hugo/themes/herring-cove
+Cloning into blog-hugo/'themes/herring-cove'...
+remote: Enumerating objects: 178, done.
+remote: Total 178 (delta 0), reused 0 (delta 0), pack-reused 178
+Receiving objects: 100% (178/178), 6.57 MiB | 12.31 MiB/s, done.
+Resolving deltas: 100% (71/71), done.
+$ cd blog-hugo 
+$ hugo server --theme=herring-cove
+port 1313 already in use, attempting to use an available port
+Start building sites … 
+hugo v0.96.0+extended linux/amd64 BuildDate=unknown VendorInfo=debian:0.96.0-1
+ERROR 2022/05/12 00:24:01 render of "page" failed: execute of template failed: template: partials/header.html:8:10: executing "partials/header.html" at <.Hugo.Generator>: can't evaluate field Hugo in type *hugolib.pageState
+ERROR 2022/05/12 00:24:01 render of "page" failed: execute of template failed: template: partials/header.html:8:10: executing "partials/header.html" at <.Hugo.Generator>: can't evaluate field Hugo in type *hugolib.pageState
+ERROR 2022/05/12 00:24:01 render of "page" failed: execute of template failed: template: partials/header.html:8:10: executing "partials/header.html" at <.Hugo.Generator>: can't evaluate field Hugo in type *hugolib.pageState
+ERROR 2022/05/12 00:24:01 render of "page" failed: execute of template failed: template: partials/header.html:8:10: executing "partials/header.html" at <.Hugo.Generator>: can't evaluate field Hugo in type *hugolib.pageState
+ERROR 2022/05/12 00:24:01 render of "page" failed: execute of template failed: template: partials/header.html:8:10: executing "partials/header.html" at <.Hugo.Generator>: can't evaluate field Hugo in type *hugolib.pageState
+Error: Error building site: failed to render pages: render of "home" failed: "/home/benoit/perso/site/blog-hugo/themes/herring-cove/layouts/index.html:9:17": execute of template failed: template: index.html:9:17: executing "index.html" at <.RSSLink>: can't evaluate field RSSLink in type *hugolib.pageState
+Built in 19 ms
+{{< / highlight >}}
+
+Oookay, so as it turms out, the 'herring-cove' suggested default theme is actualy not compatible with recents hugo, some deprecated variables are still in use like '.Hugo' and '.RSSLinks'
+
+{{< highlight shell >}}
+$ git clone https://github.com/theNewDynamic/gohugo-theme-ananke.git themes/ananke
+$ hugo server --theme=ananke
+Start building sites … 
+hugo v0.96.0+extended linux/amd64 BuildDate=unknown VendorInfo=debian:0.96.0-1+b1
+
+                   | EN  
+-------------------+-----
+  Pages            | 64  
+  Paginator pages  |  2  
+  Non-page files   |  0  
+  Static files     | 12  
+  Processed images |  0  
+  Aliases          |  2  
+  Sitemaps         |  1  
+  Cleaned          |  0  
+
+Built in 142 ms
+Watching for changes in /home/benoit/perso/site/blog-hugo/{archetypes,assets,content,data,static,themes}
+Watching for config changes in /home/benoit/perso/site/blog-hugo/config.toml, /home/benoit/perso/site/blog-hugo/themes/ananke/config.yaml
+Environment: "development"
+Serving pages from memory
+Running in Fast Render Mode. For full rebuilds on change: hugo server --disableFastRender
+Web Server is available at http://localhost:1313/ (bind address 127.0.0.1)
+Press Ctrl+C to stop
+{{< / highlight >}}
+
+Much better !
+
+## Converting Post Meta tags
+
+While hugo and jekyll use basically the same way to describe a post meta (title, date, tags, ..) and most of the difference is usually being taken care thru the import tool, there is actually two modifications that often need to be taken care of:
+ * categories and tags must be defined as a list using angled brackets ("[]")
+ * categories and tags value must often be enclosed in quotes.
+ 
+{{< highlight markdown >}}
+---
+categories: [ 'blog' ]
+tags: [ "hugo" ] 
+...
+---
+{{< / highlight >}}
+
+## Converting syntax highlighting
+
+The conversion should be taken care of by the ```hugo import``` process, however a simple sed line could always take care of it later if needed:
+
+{{< highlight shell >}}
+sed -i 's/{% highlight \(.*\) %}/\{\{< highlight \1 >}}/;s/{% endhighlight %}/\{\{< \/ highlight >}}/' *.md *.markdow
+{{< / highlight >}}
+
+
+## Conclusion
+

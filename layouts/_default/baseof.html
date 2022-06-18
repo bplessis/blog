@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{ if isset .Params "title" }}
+    <title>{{ .Title }} | {{ site.Title }}</title>
+    {{ else }}
+    <title>{{ site.Title }}</title>
+    {{ end }}
+    <meta property="og:title" content="{{ site.Title }}" />
+    {{ $style := resources.Get "sass/main.scss" | resources.ToCSS | resources.Minify }}
+    <link rel="stylesheet" href="{{ $style.Permalink }}">
+    {{ $style := resources.Get "sass/syntax.css" | resources.Minify }}
+    <link rel="stylesheet" href="{{ $style.Permalink }}">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Prompt:wght@700&display=swap" rel="stylesheet">
+
+</head>
+<body class="page">
+  
+  <header class="top-header">
+    <nav>
+      <ul class="top-nav">
+        <li class="top-nav__logo"><a href="/">{{ site.Title }}</a></li> 
+        <li class="top-nav__link"><a href="/pages/about">About</a>
+        <li class="top-nav__link"><a href="/post/">Archives</a>
+        <li class="top-nav__link"><a href="/pages/Links">Links</a>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <aside>
+      <!-- this aside is tangentially related to the page also, it contains twitter messages from the blog author -->
+      <h1>Author</h1>
+
+      <div class="profil">
+        <h4><a href="/pages/about/">Benoit Plessis</a></h4>
+        {{ with resources.Get "images/profil.png" }}
+        {{ with .Err }}
+        {{ warnf "%s" . }}
+        {{ else }}
+                <img src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" alt="Author Profil">
+        {{ end }}
+        {{ end }}
+        <p>System &amp; Network Engineer - France</p>
+      </div>
+      <p><small>Simple sysadmin notes and thought on the world&hellip; Yeah no just kidding, some less than special rant and diary.</small></p>
+    
+      <nav id="social">
+        <ul>
+          <li><a href="mailto:benoit@plessis.info">Email Contact</a></li>
+          <li><a href="https://twitter.com/silmaril34?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @silmaril34</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+          </li>
+          <li><!-- Place this tag where you want the button to render. -->
+<a class="github-button" href="https://github.com/bplessis" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" aria-label="Follow @bplessis on GitHub">Follow @bplessis</a><script async defer src="https://buttons.github.io/buttons.js"></script></li>
+        </ul>
+      </nav>
+
+      <!-- 
+         <blockquote cite="http://twitter.example.net/t31351234">
+           I'm on vacation, writing my blog.
+         </blockquote>
+         <blockquote cite="http://twitter.example.net/t31219752">
+           I'm going to go on vacation soon.
+         </blockquote>
+         -->
+    </aside>
+
+ 
+    <div class="page-content">
+      {{ block "main" . }}{{ end }}
+    </div>
+  </main>
+  
+  <footer>
+    <div> ©{{ now.Format "2006" }}. Built with <a href="https://gohugo.com/">Hugo</a> custom layout loosely based on <a href="https://github.com/ellekasai/shiori">Jekyll Shiori Theme</a>.</div>
+    <div>
+      <p>Using: <a href="https://www.w3.org/html/logo/"> <img src="https://www.w3.org/html/logo/badge/html5-badge-h-css3.png" alt="HTML5 Powered with CSS3 / Styling" title="HTML5 Powered with CSS3 / Styling" width="33" height="16"> </a> <a href="https://validator.w3.org/check?uri=/">Validate</a>
+      </p>      
+    </div>
+    
+  </footer>
+</body>
+</html>

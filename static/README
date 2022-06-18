@@ -1,0 +1,11 @@
+This is my blog source repository
+
+## Dependencies
+
+ * Jekyll 3
+ * kramdown
+ * rouge
+
+## Thanks
+
+  Elle kasai for Shiori Theme base: https://github.com/ellekasai/shiori

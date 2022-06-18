@@ -1,0 +1,14 @@
+{{ define "main" }}
+
+  {{ range (first 3 .Site.RegularPages) }}
+
+    {{ partial "posts/summary.html" . }}
+
+  {{ end }}
+
+<hr/>
+<div class="home-read-more">
+  <a href="/post" class="btn btn-primary btn-block btn-lg">View All {{ len .Site.RegularPages }} Articles →</a>
+</div>
+
+{{ end }}

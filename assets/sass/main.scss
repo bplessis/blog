@@ -1,0 +1,246 @@
+
+$primary-font: "Merriweather", "Helvetica Neue", Arial, sans-serif;
+$heading-font: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+$bg-primary: #3498db;
+$dark-blue:  #1D3557;
+$dark-orange: #BC6C25;
+$link-bl: #3498db;
+$desktop-page-sp: 100px;
+$container-padding-sm: 24px;
+$container-padding-lg: 96px;
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  font-family: $primary-font;
+  color: #212529;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $heading-font;
+  font-weight: bold;
+  padding: 20px 0;
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+p {
+  line-height: 2rem;
+}
+
+a, a:visited {
+  text-decoration: none;
+  color: $link-bl;
+}
+
+a:hover {
+  opacity: 0.5;
+}
+
+.icons:hover{
+  opacity: 0.5;
+}
+
+hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top-color: currentcolor;
+    border-top-style: none;
+    border-top-width: 0px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+main {
+    display: flex;
+    min-height: calc( 100vh - 30px);
+    width: 60%;
+    margin-left: 10%;
+
+    aside {
+        border-left: 1px solid rgb(204, 204, 204);
+        padding-left: 1em;
+        padding-right: 1em;
+        order: 2;
+        position: fixed;
+        top: 100px;
+        right: 0px;
+        z-index: various;
+        width: 20%;
+        
+        nav {
+            margin-top: 1em;
+            
+            ul {
+                list-style-type: none;
+                
+                li {
+                    margin: 1em;
+                }
+            }
+        }
+    }
+    
+    .page-content {
+        flex: 1 0 auto;
+        order: 1;
+        width: 70%;
+    }
+
+    .home-read-more {
+        margin-top: 1em;
+        padding-left: 4em;
+        padding-right: 4em;
+        text-align: center;
+        margin-bottom: 2em;
+
+        a, a:visited {
+            display: block;
+            padding: 0.5rem 1rem;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            border-radius: 0.3rem;
+
+            font-family: $heading-font;
+            font-weight: bold;
+            background-color: $bg-primary;
+            height: 100%;
+            width: 50%;
+            color: white;
+            border: 1px solid #3498db;
+            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+    }
+}
+
+.page-content {
+    padding-top: 2em;
+    nav {
+        display: flex;
+
+        div {
+            flex: 1 0 auto;
+            width: 40%;
+        }
+    }
+}
+
+article.post-preview {
+    header {
+        h1 {
+            a, a:visited {
+                text-decoration: none;
+                color: inherit;
+            } 
+            padding-bottom: 0;
+        }
+        time {
+            display: block;
+            color: #6c757d !important;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+    }
+    p {
+        
+    }
+    footer {
+        background-color: transparent;
+        width: 100%;
+        min-height: 1em;
+        text-align: right;
+        a {
+            width: 100%;
+        }
+    }
+}
+
+
+.heading-secondary {
+  font-size: 2.3rem;
+  padding: 0;
+}
+
+div.highlight {
+    pre {
+        padding-top: 1em;
+        padding-bottom: 1em;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        overflow-x: scroll;
+        /*white-space: pre-wrap;
+        word-break: break-word;*/
+    }
+} 
+
+
+header.top-header {
+    background: $bg-primary;
+    color: white;
+    width: 100%;
+
+    padding: 1em 8px;
+
+    & nav {
+
+        & .top-nav {
+            list-style-type: none;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            font-family: $primary-font;
+    
+            & li a {
+                color: rgba(255, 255, 255, 0.5);
+            }
+
+            &__link {
+                text-align: center;
+                font-weight: 600;
+                padding: 0.5rem 0.5rem;
+            }
+    
+            &__logo {
+                font-size: 1.25rem;
+                padding: 0.275rem 0.275rem;
+                font-weight: bold;
+        
+                & a {
+                    color: white !important;
+                }
+            }    
+        }
+
+    }
+}
+
+
+/* Hero section */
+
+
+
+// Footer area
+body > footer {
+    text-align: center;
+    color: #ababab;
+    background: #ededed;
+    min-height: 40px;
+    flex-shrink: 0;
+    justify-content: center;
+    padding-top: 20px;
+    font-size: 12px;
+}
+
