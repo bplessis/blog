@@ -1,10 +1,15 @@
 # Hugo variables
 #
-baseURL = "https://blog.plessis.info"
+relativeURLs = true
+#baseURL = "https://blog.plessis.info"
 disablePathToLower = true
+
+# Default content language for Hugo 0.17's multilingual support (default is "en")
+# See: https://github.com/spf13/hugo/blob/master/docs/content/content/multilingual.md
+DefaultContentLanguage = "en"
 languageCode = "en-us"
+
 title = "Silmaril's Blog"
-#theme = "ananke"
 
 # number of posts to show on home/category/tag pages (Default: 10)
 paginate = 10
@@ -111,9 +116,6 @@ ignoreFiles = ['^\.#.*', '^#.*']
     style = 'monokai'
     tabWidth = 4
     
-# Default content language for Hugo 0.17's multilingual support (default is "en")
-# See: https://github.com/spf13/hugo/blob/master/docs/content/content/multilingual.md
-#DefaultContentLanguage = "en"
 
 # Languages to render
 #[languages.en]
