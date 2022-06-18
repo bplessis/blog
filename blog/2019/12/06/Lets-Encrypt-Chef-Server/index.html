@@ -1,0 +1,113 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Let's Encrypt Chef-Server | Silmaril's Blog</title><meta property="og:title" content="Silmaril's Blog"><link rel=stylesheet href=../../../../../main.min.css><link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Prompt:wght@700&display=swap" rel=stylesheet></head><body class=page><header class=top-header><nav><ul class=top-nav><li class=top-nav__logo><a href=../../../../../>Silmaril's Blog</a></li><li class=top-nav__link><a href=../../../../../pages/about>About</a><li class=top-nav__link><a href=../../../../../blog/>Archives</a><li class=top-nav__link><a href=../../../../../pages/links>Links</a></ul></nav></header><main class=main-content><aside><h1>Author</h1><div class=profil><h4><a href=../../../../../pages/about/>Benoit Plessis</a></h4><img src=../../../../../images/profil.png width=100 height=100 alt="Author Profil"><p>System & Network Engineer - France</p></div><p><small>Simple sysadmin notes and thought on the world&mldr; Yeah no just kidding, some less than special rant and diary.</small></p><nav id=social><ul><li><a href=mailto:benoit@plessis.info>Email Contact</a></li><li><a href="https://twitter.com/silmaril34?ref_src=twsrc%5Etfw" class=twitter-follow-button data-show-count=false>Follow @silmaril34</a><script async src=https://platform.twitter.com/widgets.js></script></li><li><a class=github-button href=https://github.com/bplessis data-color-scheme="no-preference: light; light: light; dark: dark;" data-size=large aria-label="Follow @bplessis on GitHub">Follow @bplessis</a><script async defer src=https://buttons.github.io/buttons.js></script></li></ul></nav></aside><div class=page-content><article id=content><p>Hi,</p><p>So today i wanted to switch our chef-server certificates from an old internal pki with issues (SHA1 &mldr;) to another solution, and since we are avid users of Let&rsquo;s Encrypt this was my first idea.</p><p>However i quickly stumble onto an issue, the chef-server private cookbook aren&rsquo;t &lsquo;compatible&rsquo; with this (ie there is no way to insert some custom nginx rules on the correct location to allow serving of /.well-known/acme-challenge/) &mldr;</p><p>So i had to be creative, and the first idea is: <em>put an nginx in front of chef&rsquo;s nginx on port 80</em>, and there is how i did it:</p><h1 id=setting-up-the-webproxy>Setting up the webproxy</h1><p>So, first things first, we have to tell chef to free our beloved port 80 for our internal use, we start by editing &lsquo;/etc/opscode/chef-server.rb&rsquo; to add/modify the non_ssl_port attribute:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>nginx<span class=o>[</span><span class=s1>&#39;non_ssl_port&#39;</span><span class=o>]</span> <span class=o>=</span> <span class=m>8080</span></span></span></code></pre></div><p>And then we can trigger chef-server reconfiguration:<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@chef:~ <span class=c1># chef-server-ctl reconfigure</span></span></span></code></pre></div></p><p>After that&rsquo;s done, we can install and set-up nginx on the linux host, here is the ubuntu/debian way but i&rsquo;m sure you can adapt to your liking:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@chef:~ <span class=c1># apt install nginx</span>
+</span></span><span class=line><span class=cl>root@chef:~ <span class=c1># cat &gt; /etc/nginx/sites-available/chef-server-le &lt;&lt;EOF</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>upstream opscode_chef <span class=o>{</span>
+</span></span><span class=line><span class=cl>	server 127.0.0.1:8080<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>server <span class=o>{</span>
+</span></span><span class=line><span class=cl>	listen <span class=m>80</span> default_server<span class=p>;</span>
+</span></span><span class=line><span class=cl>	listen <span class=o>[</span>::<span class=o>]</span>:80 default_server<span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	root /var/www/html<span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	index index.html index.htm index.nginx-debian.html<span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	server_name _<span class=p>;</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=c1># Serve well-known file locally</span>
+</span></span><span class=line><span class=cl>	location /.well-known/ <span class=o>{</span>
+</span></span><span class=line><span class=cl>		try_files <span class=nv>$uri</span> <span class=nv>$uri</span>/ <span class=o>=</span>404<span class=p>;</span>
+</span></span><span class=line><span class=cl>	<span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=c1># Forward everything else to chef-server nginx</span>
+</span></span><span class=line><span class=cl>	location / <span class=o>{</span>
+</span></span><span class=line><span class=cl>		include proxy_params<span class=p>;</span>
+</span></span><span class=line><span class=cl>		proxy_pass http://opscode_chef<span class=p>;</span>
+</span></span><span class=line><span class=cl>	<span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>EOF
+</span></span><span class=line><span class=cl>root@chef:~ <span class=c1># ln -s /etc/nginx/sites-available/chef-server-le /etc/nginx/sites-enabled/chef-server-le</span>
+</span></span><span class=line><span class=cl>root@chef:~ <span class=c1># service nginx restart</span></span></span></code></pre></div><h1 id=setting-up-the-acme-client>Setting up the acme client</h1><p>I am pretty fond of Lukas Schauer <a href=https://twitter.com/lukas2511>@lukas2511</a> bash solution <a href=https://github.com/lukas2511/dehydrated><em>dehydrated</em></a> so there is how i set it up, it shouldn&rsquo;t be difficult to adapt this to any other acme client:</p><h2 id=installing-dehydrated-my-way>Installing dehydrated (my way)</h2><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@chef:~ <span class=c1># git clone https://github.com/lukas2511/dehydrated.git /usr/local/share/dehydrated</span>
+</span></span><span class=line><span class=cl>root@chef:~ <span class=c1># ln -s /usr/local/share/dehydrated/dehydrated /usr/local/sbin/dehydrated</span>
+</span></span><span class=line><span class=cl>root@chef:~ <span class=c1># cat &gt; /etc/cron.daily/dehydrated &lt;&lt; EOF</span>
+</span></span><span class=line><span class=cl><span class=c1>#!/bin/bash</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=nb>test</span> -x /usr/local/sbin/dehydrated <span class=o>||</span> <span class=nb>exit</span> <span class=m>0</span>
+</span></span><span class=line><span class=cl><span class=nv>LANGUAGE</span><span class=o>=</span>C
+</span></span><span class=line><span class=cl><span class=nv>LC_ALL</span><span class=o>=</span>C
+</span></span><span class=line><span class=cl><span class=nb>export</span> LANGUAGE LC_ALL
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># If you need a proxy:</span>
+</span></span><span class=line><span class=cl><span class=c1>#https_proxy=http://proxy:3128</span>
+</span></span><span class=line><span class=cl><span class=c1>#http_proxy=http://proxy:3128</span>
+</span></span><span class=line><span class=cl><span class=c1>#ftp_proxy=http://proxy:3128</span>
+</span></span><span class=line><span class=cl><span class=c1>#export https_proxy http_proxy ftp_proxy</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Load dehydrated configuration</span>
+</span></span><span class=line><span class=cl><span class=nv>TMPENV</span><span class=o>=</span><span class=k>$(</span>mktemp -t dhenvXXX<span class=k>)</span>
+</span></span><span class=line><span class=cl>/usr/local/sbin/dehydrated --env &gt;&gt; <span class=nv>$TMPENV</span>
+</span></span><span class=line><span class=cl><span class=nb>source</span> <span class=nv>$TMPENV</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> -e <span class=s2>&#34;</span><span class=nv>$DOMAINS_TXT</span><span class=s2>&#34;</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>    /usr/local/sbin/dehydrated -c -g
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>/bin/rm <span class=nv>$TMPENV</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#EOF</span>
+</span></span><span class=line><span class=cl>EOF</span></span></code></pre></div><p>And there you go !</p><h2 id=configuring-dehydrated>Configuring dehydrated</h2><p>&mldr; Well almost ^^ we still have a bit of setup to do.</p><p>So we have three files to create: the global configuration, the domain list and the hook script who will take care of restarting chef-server when needed.</p><p>For the global configuration (default path /usr/local/etc/dehydrated/config), i mostly setup the bare minimum: CONTACT_EMAIL for the account creation / mail notifications from LE, WELLKNOWN which is the path that will publish the challenges and HOOK to define our custom-made scripts, exemple:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@chef:~ <span class=c1># cat &gt; /usr/local/etc/dehydrated/config &lt;&lt; EOF</span>
+</span></span><span class=line><span class=cl><span class=nv>CONTACT_EMAIL</span><span class=o>=</span>ssl@xxx.com
+</span></span><span class=line><span class=cl><span class=nv>WELLKNOWN</span><span class=o>=</span>/var/www/html/.well-known/acme-challenge
+</span></span><span class=line><span class=cl><span class=nv>HOOK</span><span class=o>=</span>/usr/local/sbin/le-hook.sh
+</span></span><span class=line><span class=cl>EOF</span></span></code></pre></div><p>For the ssl domain, if as i did you only need the host name there is an easy way:<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@chef:~ <span class=c1># hostname -f &gt;| /usr/local/etc/dehydrated/domains.txt</span></span></span></code></pre></div>If not you&rsquo;ll need to fire-up your favorite EDITOR (echo or cat, as you wish ^^) and create &lsquo;/usr/local/etc/dehydrated/domains.txt&rsquo;.</p><p>And as for the hook script there is a base for you to extend if you want:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@chef:~ <span class=c1># cat &gt; /usr/local/sbin/le-hook.sh &lt;&lt; EOF</span>
+</span></span><span class=line><span class=cl><span class=c1>#!/usr/bin/env bash</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>function</span> deploy_challenge <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>local</span> <span class=nv>DOMAIN</span><span class=o>=</span><span class=s2>&#34;&#34;</span> <span class=nv>TOKEN_FILENAME</span><span class=o>=</span><span class=s2>&#34;&#34;</span> <span class=nv>TOKEN_VALUE</span><span class=o>=</span><span class=s2>&#34;&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>function</span> clean_challenge <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>local</span> <span class=nv>DOMAIN</span><span class=o>=</span><span class=s2>&#34;&#34;</span> <span class=nv>TOKEN_FILENAME</span><span class=o>=</span><span class=s2>&#34;&#34;</span> <span class=nv>TOKEN_VALUE</span><span class=o>=</span><span class=s2>&#34;&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>function</span> deploy_cert <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>local</span> <span class=nv>DOMAIN</span><span class=o>=</span><span class=s2>&#34;&#34;</span> <span class=nv>KEYFILE</span><span class=o>=</span><span class=s2>&#34;&#34;</span> <span class=nv>CERTFILE</span><span class=o>=</span><span class=s2>&#34;&#34;</span> <span class=nv>FULLCHAINFILE</span><span class=o>=</span><span class=s2>&#34;&#34;</span> <span class=nv>CHAINFILE</span><span class=o>=</span><span class=s2>&#34;&#34;</span> <span class=nv>TIMESTAMP</span><span class=o>=</span><span class=s2>&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    chef-server-ctl restart
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>function</span> unchanged_cert <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>local</span> <span class=nv>DOMAIN</span><span class=o>=</span><span class=s2>&#34;&#34;</span> <span class=nv>KEYFILE</span><span class=o>=</span><span class=s2>&#34;&#34;</span> <span class=nv>CERTFILE</span><span class=o>=</span><span class=s2>&#34;&#34;</span> <span class=nv>FULLCHAINFILE</span><span class=o>=</span><span class=s2>&#34;&#34;</span> <span class=nv>CHAINFILE</span><span class=o>=</span><span class=s2>&#34;&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>invalid_challenge<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>local</span> <span class=nv>DOMAIN</span><span class=o>=</span><span class=s2>&#34;&#34;</span> <span class=nv>RESPONSE</span><span class=o>=</span><span class=s2>&#34;&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1>#    sendmail -t &lt;&lt;MAIL_END</span>
+</span></span><span class=line><span class=cl><span class=c1>#MAIL_END</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>request_failure<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>local</span> <span class=nv>STATUSCODE</span><span class=o>=</span><span class=s2>&#34;&#34;</span> <span class=nv>REASON</span><span class=o>=</span><span class=s2>&#34;&#34;</span> <span class=nv>REQTYPE</span><span class=o>=</span><span class=s2>&#34;&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1>#    sendmail -t &lt;&lt;MAIL_END</span>
+</span></span><span class=line><span class=cl><span class=c1>#MAIL_END</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>exit_hook<span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=c1># This hook is called at the end of a dehydrated command and can be used</span>
+</span></span><span class=line><span class=cl>  <span class=c1># to do some final (cleanup or other) tasks.</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  :
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>HANDLER</span><span class=o>=</span><span class=s2>&#34;&#34;</span><span class=p>;</span> <span class=nb>shift</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[[</span> <span class=s2>&#34;&#34;</span> <span class=o>=</span>~ ^<span class=o>(</span>deploy_challenge<span class=p>|</span>clean_challenge<span class=p>|</span>deploy_cert<span class=p>|</span>unchanged_cert<span class=p>|</span>invalid_challenge<span class=p>|</span>request_failure<span class=p>|</span>exit_hook<span class=o>)</span>$ <span class=o>]]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>  <span class=s2>&#34;&#34;</span> <span class=s2>&#34;&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>EOF</span></span></code></pre></div><h2 id=certificate-generation>Certificate generation</h2><p>Easy enough, you only need to register the account (once) and trigger a first run of dehydrated using &ldquo;-c&rdquo;:<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@chef:~ <span class=c1># /usr/local/sbin/dehydrated --register --accept-terms</span>
+</span></span><span class=line><span class=cl>root@chef:~ <span class=c1># /usr/local/sbin/dehydrated -c</span></span></span></code></pre></div></p><h1 id=setting-up-the-new-certificate-for-chef-server>Setting up the new certificate for chef-server</h1><p>Easy enough, fire up this good old $EDITOR onto &lsquo;/etc/opscode/chef-server.rb&rsquo; and modify the two ssl_certificate/ssl_certificate_key attributes, exemple:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>nginx<span class=o>[</span><span class=s1>&#39;ssl_certificate&#39;</span><span class=o>]</span>  <span class=o>=</span> <span class=s2>&#34;/usr/local/etc/dehydrated/certs/chef.xxx.com/cert.pem&#34;</span>
+</span></span><span class=line><span class=cl>nginx<span class=o>[</span><span class=s1>&#39;ssl_certificate_key&#39;</span><span class=o>]</span>  <span class=o>=</span> <span class=s2>&#34;/usr/local/etc/dehydrated/certs/chef.xxx.com/privkey.pem&#34;</span></span></span></code></pre></div><p>And reconfigure chef, which will also restart it:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@chef:~ <span class=c1># chef-server-ctl reconfigure</span></span></span></code></pre></div><p>Et Voila !</p></article><hr><nav id=timenav><div id=previnsection><h3>Older</h3><article class=post-link><header><h1><a href=../../../../../blog/2018/04/22/FreeBSD-DHCPv6/>FreeBSD DHCPv6</a></h1><p>In FreeBSD Setup i detailed the use of KAME&rsquo;s dhcp client to authentify and request an IPv6 block to be routed onto the server.
+However as it seem this client has a tendancy to misbehave and trigger the hosting provider DOS defense mechanism (mainly rebooting the serveur after disabling dhcp service autorisations, not fun).
+While checking around with friend it seems i wasn&rsquo;t the first one hit by this and that the solution was to switch over to ISC&rsquo;s dhcp service, with a little twist (freebsd package for isc-dhcp doesn&rsquo;t include an init script for dhcpv6).</p></article></div><div id=nextinsection><h3>Newer</h3><article class=post-link><header><h1><a href=../../../../../blog/2020/02/11/Setting-up-an-HA-LoadBalancer-with-haproxy-2.x-and-exabgp-4.x/>Setting up an HA LoadBalancer with haproxy 2.x and exabgp 4.x</a></h1><p>A few time ago i started a project of replacing our proprietary load-balancing solution. As i already previously used haproxy for the task i leaned over re-using this formidable software. However i did not wanted to use VRRP for HA-ing the lot, so there is the story of how i did this.
+Schema Here is a quick schematic depicting the final configuration:
+Setting up HAProxy First things first, you&rsquo;ll need to add haproxy (at least 2.</p></article></div></nav></div></main><footer><div>©2022. Built with <a href=https://gohugo.com/>Hugo</a> custom layout loosely based on <a href=https://github.com/ellekasai/shiori>Jekyll Shiori Theme</a>.</div><div><p>Using: <a href=https://www.w3.org/html/logo/><img src=https://www.w3.org/html/logo/badge/html5-badge-h-css3.png alt="HTML5 Powered with CSS3 / Styling" title="HTML5 Powered with CSS3 / Styling" width=33 height=16></a> <a href="https://validator.w3.org/check?uri=/">Validate</a></p></div></footer></body></html>

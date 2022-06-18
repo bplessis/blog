@@ -1,0 +1,106 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Configuration Time | Silmaril's Blog</title><meta property="og:title" content="Silmaril's Blog"><link rel=stylesheet href=../../../../../main.min.css><link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Prompt:wght@700&display=swap" rel=stylesheet></head><body class=page><header class=top-header><nav><ul class=top-nav><li class=top-nav__logo><a href=../../../../../>Silmaril's Blog</a></li><li class=top-nav__link><a href=../../../../../pages/about>About</a><li class=top-nav__link><a href=../../../../../blog/>Archives</a><li class=top-nav__link><a href=../../../../../pages/links>Links</a></ul></nav></header><main class=main-content><aside><h1>Author</h1><div class=profil><h4><a href=../../../../../pages/about/>Benoit Plessis</a></h4><img src=../../../../../images/profil.png width=100 height=100 alt="Author Profil"><p>System & Network Engineer - France</p></div><p><small>Simple sysadmin notes and thought on the world&mldr; Yeah no just kidding, some less than special rant and diary.</small></p><nav id=social><ul><li><a href=mailto:benoit@plessis.info>Email Contact</a></li><li><a href="https://twitter.com/silmaril34?ref_src=twsrc%5Etfw" class=twitter-follow-button data-show-count=false>Follow @silmaril34</a><script async src=https://platform.twitter.com/widgets.js></script></li><li><a class=github-button href=https://github.com/bplessis data-color-scheme="no-preference: light; light: light; dark: dark;" data-size=large aria-label="Follow @bplessis on GitHub">Follow @bplessis</a><script async defer src=https://buttons.github.io/buttons.js></script></li></ul></nav></aside><div class=page-content><article id=content><p>Hi there,</p><p>Taking over where i left before, so now i do have a fresh and shiny new machine, time to set it up.</p><h1 id=the-base-system>The Base System</h1><p>FreeBSD contrarious to linux system is separated into two main part, the main part is the &ldquo;base system&rdquo;, basically it&rsquo;s what FreeBSD is, and is released and updated as a whole.</p><p>To keep the base system up to date we need to use the <em>freebsd-update</em> utility.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@frb:~ <span class=c1># freebsd-update fetch</span>
+</span></span><span class=line><span class=cl>root@frb:~ <span class=c1># freebsd-update install</span></span></span></code></pre></div><h1 id=additional-software>Additional Software</h1><p>Contrary to Linux Distributions, at least thoses like debian, freebsd by itself is relatively small. But there is a huge collection of additionnal software available in two differents forms, the <em>port</em> system, and the <em>pkg</em> repository. The <em>port</em> system is basicaly a collection of build process to build software from source with all required dependencies and integrate it on the freebsd system. The <em>pkg</em> repository is a binary form distribution, which also take care of dependency handling.</p><p>The choice is yours, <em>ports</em> allow for fine tuning build options, while <em>pkg</em> packages can be provided with a few &lsquo;flavors&rsquo; but there is a limited choice.</p><p><em>pkg</em> must be bootstrapped by running it first:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@frb:~ <span class=c1># pkg</span>
+</span></span><span class=line><span class=cl>The package management tool is not yet installed on your system.
+</span></span><span class=line><span class=cl>Do you want to fetch and install it now? <span class=o>[</span>y/N<span class=o>]</span>: y
+</span></span><span class=line><span class=cl>Bootstrapping pkg from pkg+http://pkg.FreeBSD.org/FreeBSD:11:amd64/quarterly, please wait...
+</span></span><span class=line><span class=cl>Verifying signature with trusted certificate pkg.freebsd.org.2013102301... <span class=k>done</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>frb<span class=o>]</span> Installing pkg-1.9.4_1...
+</span></span><span class=line><span class=cl><span class=o>[</span>frb<span class=o>]</span> Extracting pkg-1.9.4_1: 100%
+</span></span><span class=line><span class=cl>pkg: not enough arguments
+</span></span><span class=line><span class=cl>Usage: pkg <span class=o>[</span>-v<span class=o>]</span> <span class=o>[</span>-d<span class=o>]</span> <span class=o>[</span>-l<span class=o>]</span> <span class=o>[</span>-N<span class=o>]</span> <span class=o>[</span>-j &lt;jail name or id&gt;<span class=p>|</span>-c &lt;chroot path&gt;<span class=p>|</span>-r &lt;rootdir&gt;<span class=o>]</span> <span class=o>[</span>-C &lt;configuration file&gt;<span class=o>]</span> <span class=o>[</span>-R &lt;repo config dir&gt;<span class=o>]</span> <span class=o>[</span>-o <span class=nv>var</span><span class=o>=</span>value<span class=o>]</span> <span class=o>[</span>-4<span class=p>|</span>-6<span class=o>]</span> &lt;command&gt; <span class=o>[</span>&lt;args&gt;<span class=o>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>For more information on available commands and options see <span class=s1>&#39;pkg help&#39;</span>.</span></span></code></pre></div><p>Then we can use the install method to start adding some value to the base system:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@frb:~ <span class=c1># pkg install zsh bash</span>
+</span></span><span class=line><span class=cl>Updating FreeBSD repository catalogue...
+</span></span><span class=line><span class=cl><span class=o>[</span>frb<span class=o>]</span> Fetching meta.txz: 100%    <span class=m>944</span> B   0.9kB/s    00:01
+</span></span><span class=line><span class=cl><span class=o>[</span>frb<span class=o>]</span> Fetching packagesite.txz: 100%    <span class=m>6</span> MiB   5.9MB/s    00:01
+</span></span><span class=line><span class=cl>Processing entries: 100%
+</span></span><span class=line><span class=cl>FreeBSD repository update completed. <span class=m>25857</span> packages processed.
+</span></span><span class=line><span class=cl>Updating database digests format: 100%
+</span></span><span class=line><span class=cl>The following <span class=m>4</span> package<span class=o>(</span>s<span class=o>)</span> will be affected <span class=o>(</span>of <span class=m>0</span> checked<span class=o>)</span>:
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>New packages to be INSTALLED:
+</span></span><span class=line><span class=cl>        zsh: 5.3.1
+</span></span><span class=line><span class=cl>        bash: 4.4.12
+</span></span><span class=line><span class=cl>        indexinfo: 0.2.6
+</span></span><span class=line><span class=cl>        gettext-runtime: 0.19.8.1_1
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Number of packages to be installed: <span class=m>4</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>The process will require <span class=m>24</span> MiB more space.
+</span></span><span class=line><span class=cl><span class=m>5</span> MiB to be downloaded.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Proceed with this action? <span class=o>[</span>y/N<span class=o>]</span>: y
+</span></span><span class=line><span class=cl><span class=o>[</span>frb<span class=o>]</span> Fetching zsh-5.3.1.txz: 100%    <span class=m>4</span> MiB   4.1MB/s    00:01
+</span></span><span class=line><span class=cl><span class=o>[</span>frb<span class=o>]</span> Fetching bash-4.4.12.txz: 100%    <span class=m>1</span> MiB   1.5MB/s    00:01
+</span></span><span class=line><span class=cl><span class=o>[</span>frb<span class=o>]</span> Fetching indexinfo-0.2.6.txz: 100%    <span class=m>5</span> KiB   5.3kB/s    00:01
+</span></span><span class=line><span class=cl><span class=o>[</span>frb<span class=o>]</span> Fetching gettext-runtime-0.19.8.1_1.txz: 100%  <span class=m>147</span> KiB 151.0kB/s    00:01
+</span></span><span class=line><span class=cl>Checking integrity... <span class=k>done</span> <span class=o>(</span><span class=m>0</span> conflicting<span class=o>)</span>
+</span></span><span class=line><span class=cl><span class=o>[</span>frb<span class=o>]</span> <span class=o>[</span>1/4<span class=o>]</span> Installing indexinfo-0.2.6...
+</span></span><span class=line><span class=cl><span class=o>[</span>frb<span class=o>]</span> <span class=o>[</span>1/4<span class=o>]</span> Extracting indexinfo-0.2.6: 100%
+</span></span><span class=line><span class=cl><span class=o>[</span>frb<span class=o>]</span> <span class=o>[</span>2/4<span class=o>]</span> Installing gettext-runtime-0.19.8.1_1...
+</span></span><span class=line><span class=cl><span class=o>[</span>frb<span class=o>]</span> <span class=o>[</span>2/4<span class=o>]</span> Extracting gettext-runtime-0.19.8.1_1: 100%
+</span></span><span class=line><span class=cl><span class=o>[</span>frb<span class=o>]</span> <span class=o>[</span>3/4<span class=o>]</span> Installing zsh-5.3.1...
+</span></span><span class=line><span class=cl><span class=o>[</span>frb<span class=o>]</span> <span class=o>[</span>3/4<span class=o>]</span> Extracting zsh-5.3.1: 100%
+</span></span><span class=line><span class=cl><span class=o>[</span>frb<span class=o>]</span> <span class=o>[</span>4/4<span class=o>]</span> Installing bash-4.4.12...
+</span></span><span class=line><span class=cl><span class=o>[</span>frb<span class=o>]</span> <span class=o>[</span>4/4<span class=o>]</span> Extracting bash-4.4.12: 100%
+</span></span><span class=line><span class=cl>Message from zsh-5.3.1:
+</span></span><span class=line><span class=cl><span class=o>==========================================================</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>By default, zsh looks <span class=k>for</span> system-wide defaults in
+</span></span><span class=line><span class=cl>/usr/local/etc.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>If you previously <span class=nb>set</span> up /etc/zprofile, /etc/zshenv, etc.,
+</span></span><span class=line><span class=cl>either move them to /usr/local/etc or rebuild zsh with the
+</span></span><span class=line><span class=cl>ETCDIR option enabled.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>==========================================================</span>
+</span></span><span class=line><span class=cl>Message from bash-4.4.12:
+</span></span><span class=line><span class=cl><span class=o>======================================================================</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>bash requires fdescfs<span class=o>(</span>5<span class=o>)</span> mounted on /dev/fd
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>If you have not <span class=k>done</span> it yet, please <span class=k>do</span> the following:
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        mount -t fdescfs fdesc /dev/fd
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>To make it permanent, you need the following lines in /etc/fstab:
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        fdesc   /dev/fd         fdescfs         rw      <span class=m>0</span>       <span class=nv>0</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>======================================================================</span></span></span></code></pre></div><p>There is a small set of useful software i installed of the system:</p><ul><li><p>shells:</p><ul><li>zsh</li><li>bash</li></ul></li><li><p>utilities:</p><ul><li>screen</li><li>tshark</li><li>vim-lite</li><li>mtr-nox11</li><li>curl</li><li>bind-tools (dig)</li></ul></li><li><p>Remote management:</p><ul><li>mosh</li><li>sshguard-pf (mollyguard alternative)</li></ul></li></ul><h1 id=configuration>Configuration</h1><h2 id=services>Services</h2><p>Everything goes in <em>/etc/rc.conf</em>, either by editing it directly, or by using the &lsquo;sysrc&rsquo; utility.</p><p>Default values are available in <em>/etc/defaults/rc.conf</em>.</p><h3 id=mail>Mail</h3><p>FreeBSD ship with sendmail as default mail solution. To replace it we need first to disable it with:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@frb:~ <span class=c1># sysrc sendmail_enable=&#34;NONE&#34;</span></span></span></code></pre></div><p>We also need to disable sendmail related periodic traitements, for that it is necessary to create <em>/etc/periodic.conf</em> if it doesn&rsquo;t exist and add the following:</p><pre><code># disable sendmail task
+daily_clean_hoststat_enable=&quot;NO&quot;
+daily_status_mail_rejects_enable=&quot;NO&quot;
+daily_status_include_submit_mailq=&quot;NO&quot;
+daily_submit_queuerun=&quot;NO&quot;
+</code></pre><p>And last but not least, i&rsquo;m sorry but we need to install a replacement for sendmail, that&rsquo;s not an options ^^ :</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@frb:~ <span class=c1># pkg install postfix</span></span></span></code></pre></div><h2 id=charset>Charset</h2><p>Editing <em>/etc/login.conf</em> to add</p><pre><code>...
+:charset=UTF-8:\
+:lang=en_US.UTF-8:\
+...
+</code></pre><p>And then rebuild the database with:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@frb:~ <span class=c1># cap_mkdb /etc/login.conf</span></span></span></code></pre></div><h2 id=ipv6>IPv6</h2><p>FreeBSD support natively IPv6 networking, however online IP allocation system require a special setup. I used <a href=http://barfooze.de/stuff/online_ipv6.txt>http://barfooze.de/stuff/online_ipv6.txt</a> as reference / starting point.</p><p>Start by installing dhcp6c from the ports collection / pkg repository:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@frb:~ <span class=c1># pkg install dhcp6c</span></span></span></code></pre></div><p>Build the duid file using this syntax:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@frb:~ <span class=c1># echo 00:03:XX:XX:... | awk &#39;{ gsub(&#34;:&#34;,&#34; &#34;); printf &#34;0: 0a 00 %s\n&#34;, $0 }&#39; | xxd -r &gt; /var/db/dhcp6c_duid</span></span></span></code></pre></div><p>And configure dhcp6c:</p><pre><code>interface bge0 {
+    send ia-pd 0;
+    send ia-na 0;
+};
+
+id-assoc na {
+};
+
+id-assoc pd {
+    prefix-interface bge0 {
+    };
+};
+</code></pre><p>You also might need to set some interface related option using rc.conf:</p><pre><code>ifconfig_bge0_ipv6=&quot;inet6 accept_rtadv&quot;
+ifconfig_bge1_ipv6=&quot;inet6 -accept_rtadv&quot;
+dhcp6c_enable=&quot;YES&quot;
+dhcp6c_interfaces=&quot;bge0&quot;
+</code></pre><p>Next start the dhcp daemon:<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@frb:~ <span class=c1># service dhcp6c start</span></span></span></code></pre></div></p><p>You can also start it in a debug mode prior to using the service, to check that everything is ok:<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@frb:~ <span class=c1># dhcp6c -Df -c /usr/local/etc/dhcp6c.conf bge0</span></span></span></code></pre></div></p><p>Also you will need to activate the router solicitation daemon to trigger RS (Router Sollicitation) request and process RA (Router Annoncement) replies.
+Add the following to your <em>rc.conf</em> file:</p><pre><code>rtsold_enable=&quot;YES&quot;
+rtsold_flags=&quot;bge0&quot;
+</code></pre><p>And then start the daemon:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@frb:~ <span class=c1># service rtsold start</span></span></span></code></pre></div><p>It&rsquo;s then easy to add a static IPv6 to the public interface and a IPv6 network on the loopback for the jails by adding the following to <em>rc.conf</em>:</p><pre><code>ifconfig_bge0_ipv6_alias0=&quot;inet6 alias 2001:bc8:2909:100:::dead:beef prefixlen 128&quot;
+ifconfig_lo1_ipv6=&quot;inet6 2001:bc8:2909:101:0:0:0:1/64&quot;
+</code></pre></article><hr><nav id=timenav><div id=previnsection><h3>Older</h3><article class=post-link><header><h1><a href=../../../../../blog/2017/02/06/Installation-Time/>Installation Time</a></h1><p>Hi there,
+Taking over where i left before, so now i do have a fresh and shiny new machine, time to set it up.
+As previously stated, the intended OS for this gig is FreeBSD, so there i am, discovering the Online Administration Console, trying to figure out what to do with this stuff.
+Has it happens, there are a few installation procedures availables &ldquo;out-of-the-box&rdquo;, letting you setup your server within the web console, for a bunch of OS, including FreeBSD, but - yeah there is always a but - the FreeBSD 11 install procedure only support the UFS filesystem.</p></article></div><div id=nextinsection><h3>Newer</h3><article class=post-link><header><h1><a href=../../../../../blog/2017/02/19/Firewalling-PF/>Firewalling: PF</a></h1><p>So, now we have some basis of a working system.
+Time to think about protecting if, while the Internet is the place to be it&rsquo;s also a kind of a bad place, moreover when you&rsquo;re in the middle of a known hosting company.
+Firewalling So, we have to play with FreeBSD firewall solution: PF, as in Packet Filter.
+Configuring So first thing is to setup a few rules in the /etc/pf.</p></article></div></nav></div></main><footer><div>©2022. Built with <a href=https://gohugo.com/>Hugo</a> custom layout loosely based on <a href=https://github.com/ellekasai/shiori>Jekyll Shiori Theme</a>.</div><div><p>Using: <a href=https://www.w3.org/html/logo/><img src=https://www.w3.org/html/logo/badge/html5-badge-h-css3.png alt="HTML5 Powered with CSS3 / Styling" title="HTML5 Powered with CSS3 / Styling" width=33 height=16></a> <a href="https://validator.w3.org/check?uri=/">Validate</a></p></div></footer></body></html>
