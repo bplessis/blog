@@ -5,7 +5,7 @@ tags: [ "freebsd", "dhcp", "ipv6" ]
 title: FreeBSD DHCPv6
 ---
 
-In [FreeBSD Setup]({% post_url 2017-02-14-freebsd-setup %}) i detailed the use of KAME's dhcp client to authentify and request an IPv6 block to be routed onto the server.
+In [FreeBSD Setup]({{< ref "2017-02-14-freebsd-setup" >}} "FreeBSD Setup") i detailed the use of KAME's dhcp client to authentify and request an IPv6 block to be routed onto the server.
 
 However as it seem this client has a tendancy to misbehave and trigger the hosting provider DOS defense mechanism (mainly rebooting the serveur after disabling dhcp service autorisations, not fun).
 
