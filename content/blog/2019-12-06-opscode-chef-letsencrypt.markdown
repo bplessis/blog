@@ -2,7 +2,6 @@
 layout: post
 date: "2019-12-06T00:00:00Z"
 title:  Let's Encrypt Chef-Server
-categories: ["blog"]
 tags: ["linux","chef-server","letsencrypt","ssl","dehydrated"]
 ---
 

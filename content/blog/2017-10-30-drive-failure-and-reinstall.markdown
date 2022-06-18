@@ -1,5 +1,4 @@
 ---
-categories: [ "blog" ]
 date: "2017-10-30T00:00:00Z"
 tags: [ "freebsd", "backup" ]
 title: Drive Failure and reinstall

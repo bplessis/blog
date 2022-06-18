@@ -1,5 +1,4 @@
 ---
-categories: ["blog"]
 date: "2017-02-14T00:00:00Z"
 tags: ["freebsd"]
 title: Configuration Time

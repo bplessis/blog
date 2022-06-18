@@ -1,5 +1,4 @@
 ---
-categories: [ "blog" ]
 date: "2018-04-22T00:00:00Z"
 tags: [ "freebsd", "dhcp", "ipv6" ]
 title: FreeBSD DHCPv6

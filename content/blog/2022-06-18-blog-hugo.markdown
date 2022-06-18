@@ -1,19 +1,21 @@
 ---
-categories: [ 'blog' ]
-date: "2022-05-12T00:00:00Z"
+date: "2022-06-18T14:00:00Z"
 tags: [ "hugo", "refactor" ]
 title: Upgrading the blog, day 360205
 ---
 
 So ...
+
 Hi back i guess ? :)
 
+
 Years have passed, the previous engine setup proved unreliable, update to jekyll, ruby, and whatever keep breaking up the thing in all ways i could not even think of.
-Jekyll-assets particularly seem to have a pretty hard time keeping up with the ecosystem, so ... let's try another way i guess ?
+
+Jekyll-assets particularly seem to have a pretty hard time keeping up with the ecosystem, so ... let's try another way ?
 
 # Hugo #
 
-So i found this tool, Hugo, basically the same concept as jekyll but based on a go software, hopefully it would prove more reliable ?
+I found this tool, Hugo ages ago, basically the same concept as jekyll but based on a go software, always wanted to do the switch hopefully it would prove more reliable ?
 
 And there is even an import tool !
 {{< highlight shell >}}
@@ -89,11 +91,12 @@ While hugo and jekyll use basically the same way to describe a post meta (title,
  
 {{< highlight markdown >}}
 ---
-categories: [ 'blog' ]
 tags: [ "hugo" ] 
 ...
 ---
 {{< / highlight >}}
+
+Actually jekyll categories are probably best replaced by hugo main 'section' taxonomy so this part can even be removed.
 
 ## Converting syntax highlighting
 
@@ -103,6 +106,24 @@ The conversion should be taken care of by the ```hugo import``` process, however
 sed -i 's/{% highlight \(.*\) %}/\{\{< highlight \1 >}}/;s/{% endhighlight %}/\{\{< \/ highlight >}}/' *.md *.markdow
 {{< / highlight >}}
 
+# Layout
+
+So that's all good and all but the layout i was using previously doesn't exist in Hugo (being abandonned and all even in jekyll anyway) so i ventured into re-creating something similar but in the same time less "huge".
+
+Availables themes are huge chunk of code, i tried customizing the `ananke` theme initialy but ended up removing everything and going from scratch.
+
+The previous theme was using bootstrap & jquery, resulting in almost 80KB of css+js, i'm currently at 5KB of css and no js, but there is no mobile view for now, still i have some margin ;).
+
+Look like however that while github widget is relatively efficient (less than 4KB) & twitter links are quite costly, adding 155KB to the download, more than half of the whole page.
+
+Still some work to do here but that'll do for now.
+
+# Content fixes 
+
+For now i haven't found any major rendering issue on the markdown, most of the syntax changes are taken care of by the import tool, except the cross post linking.
+
+Thankfully i had only one, and the change is pretty straigthforward, going from `[FreeBSD Setup]({% post_url 2017-02-14-freebsd-setup %})` to `[FreeBSD Setup]({{< ref "2017-02-14-freebsd-setup" >}})`.
 
 ## Conclusion
 
+Hugo has evolved rapidly in the last years, my initial conversion attempt weren't this straightforward, and i am quite happy of the result. The layout could benefit from using the config field in some places and all but this should be fine for first publication ... only one month after initial work !

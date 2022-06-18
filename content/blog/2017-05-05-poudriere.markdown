@@ -1,5 +1,4 @@
 ---
-categories: ["blog"]
 date: "2017-05-05T00:00:00Z"
 tags: ["freebsd"]
 title: Poudriere

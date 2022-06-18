@@ -1,5 +1,4 @@
 ---
-categories: ["blog"]
 date: "2020-02-11T00:00:00Z"
 title:  Setting up an HA LoadBalancer with haproxy 2.x and exabgp 4.x
 tags: ["linux","haproxy","exabgp","bgp","ha","dataplaneapi","debian","buster"]

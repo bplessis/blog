@@ -1,5 +1,4 @@
 ---
-categories: [ "blog" ]
 date: "2017-02-06T22:40:00Z"
 tags: [ "freebsd" ]
 title: Installation Time

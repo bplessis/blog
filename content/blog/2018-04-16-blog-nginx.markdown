@@ -1,5 +1,4 @@
 ---
-categories: [ "blog" ]
 date: "2018-04-16T00:00:00Z"
 tags: [ "freebsd", "nginx" ]
 title: Upgrading the blog, day 1

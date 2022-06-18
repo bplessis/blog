@@ -1,5 +1,4 @@
 ---
-categories: [ 'blog' ]
 date: "2018-04-17T00:00:00Z"
 tags: [ "jekyll" ]
 title: Upgrading the blog, day 2
