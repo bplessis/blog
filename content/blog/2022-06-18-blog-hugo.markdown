@@ -91,6 +91,7 @@ While hugo and jekyll use basically the same way to describe a post meta (title,
  
 {{< highlight markdown >}}
 ---
+categories: ["blog"]
 tags: [ "hugo" ] 
 ...
 ---
