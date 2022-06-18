@@ -11,7 +11,7 @@ However i did not wanted to use VRRP for HA-ing the lot, so there is the story o
 
 Here is a quick schematic depicting the final configuration:
 
-![Global Schematic](/assets/files/2020/02/global_schematic.png)
+![Global Schematic](global_schematic.png)
 
 # Setting up HAProxy
 
@@ -19,7 +19,7 @@ First things first, you'll need to add haproxy (at least 2.0 to use the included
 
 I used the almost official [Debian/Ubuntu HAProxy packages](https://haproxy.debian.net) page to add a recent enough haproxy onto buster.
 
-Configuration of haproxy is not really in the context of this article, but some points shown below need special care, a full configuration example is available [here](/assets/files/2020/02/haproxy.cfg).
+Configuration of haproxy is not really in the context of this article, but some points shown below need special care, a full configuration example is available [here](haproxy.cfg).
 
 ## Setting up the DataplaneAPI
 
@@ -99,7 +99,7 @@ neighbor 192.0.2.3 {
 }
 {{< / highlight >}}
 
-PS: This is more of a manual optimized configuration, when deploying with configuration management I ended with a ["flattened"](/assets/files/2020/02/exabgp.conf) configuration.
+PS: This is more of a manual optimized configuration, when deploying with configuration management I ended with a ["flattened"](exabgp.conf) configuration.
 
 ## Configuration BGP Router
 
@@ -135,7 +135,7 @@ ExecStartPre=-/usr/bin/mkfifo /run/exabgp/exabgp.in /run/exabgp/exabgp.out
 
 Last but not least we will need an agent for exabgp, he will extract the services IPs from the dataplaneapi and do some healthcheck before publishing an IP.
 
-[Haproxy / DataplaneAPI healthcheck Agent](/assets/files/2020/02/healthcheck-haproxy.py)
+[Haproxy / DataplaneAPI healthcheck Agent](healthcheck-haproxy.py)
 
 The agent will query haproxy dataplane to extract service IPs, and then tests them using the argument provided check, if everything is ok then a route will be sent over the bgp routers using exabgp.
 

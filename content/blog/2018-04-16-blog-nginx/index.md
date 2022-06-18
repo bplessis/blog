@@ -174,4 +174,4 @@ This helped a bit increasing PageSpeed score but it wasn't the promised/foretold
 
 So, next step is content optimisation !
 
-PS: You can download the [NGINX Configuration]({{ site.baseurl }}{% link /assets/files/2018/nginx_blog_20180417.conf %}).
+PS: You can download the [NGINX Configuration](nginx_blog_20180417.conf).
