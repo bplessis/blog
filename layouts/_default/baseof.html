@@ -11,6 +11,8 @@
     <meta property="og:title" content="{{ site.Title }}" />
     {{ $style := resources.Match "sass/**.scss" | resources.Concat "main.scss" | resources.ToCSS | resources.Minify }}
     <link rel="stylesheet" href="{{ $style.Permalink }}">
+    <meta name="description" content="{{if .IsHome}}{{ $.Site.Params.description }}{{else}}{{.Description}}{{end}}" />
+    <meta name="author" content="{{$.Site.Params.author }}" />
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Prompt:wght@700&display=swap" rel="stylesheet">
 </head>
 <body class="page">
@@ -32,7 +34,7 @@
       <h1>Author</h1>
 
       <div class="profil">
-        <h4><a href="/pages/about/">Benoit Plessis</a></h4>
+        <h4><a href="/pages/about/">{{$.Site.Params.author }}</a></h4>
         {{ with resources.Get "images/profil.png" }}
         {{ with .Err }}
         {{ warnf "%s" . }}
@@ -40,13 +42,13 @@
                 <img src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" alt="Author Profil">
         {{ end }}
         {{ end }}
-        <p>System &amp; Network Engineer - France</p>
+        <p>{{ $.Site.Params.jobdesc }}</p>
       </div>
-      <p><small>Simple sysadmin notes and thought on the world&hellip; Yeah no just kidding, some less than special rant and diary.</small></p>
+      <p><small>{{ $.Site.Params.description }} </small></p>
     
       <nav id="social">
         <ul>
-          <li><a href="mailto:benoit@plessis.info">Email Contact</a></li>
+          <li><a href="mailto:{{ $.Site.Params.email }}">Email Contact</a></li>
           <li><a href="https://twitter.com/silmaril34?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @silmaril34</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
           </li>
           <li><!-- Place this tag where you want the button to render. -->

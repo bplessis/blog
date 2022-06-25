@@ -20,6 +20,13 @@ paginate = 10
 
 # try to ignore emacs lock and temporary files (not working)
 ignoreFiles = ['^\.#.*', '^#.*']
+enableGitInfo = true
+
+[frontmatter]
+  date = ['date', 'publishDate', 'lastmod']
+  expiryDate = ['expiryDate']
+  lastmod = [':git', 'lastmod', 'date', 'publishDate']
+  publishDate = ['publishDate', 'date']
 
 [permalinks]
   blog = "/:section/:year/:month/:day/:slug/"
@@ -43,9 +50,10 @@ ignoreFiles = ['^\.#.*', '^#.*']
 [params]
   # Site author
   author = "Benoit Plessis"
-
+  jobdesc = "System & Network Engineer - France"
+  email = "benoit@plessis.info"
   # Description/subtitle for homepage (can be Markdown)
-  description = "Simple sysadmin notes and thought on the world, Yeah no just kidding, some less than special rant and diary."
+  description = "Simple sysadmin notes and thought on the world… Yeah no just kidding, some less than special rant and diary."
 
   # Format dates with Go's time formatting
   date_format = "Mon Jan 02, 2006"
@@ -99,6 +107,7 @@ ignoreFiles = ['^\.#.*', '^#.*']
     # for example: nytimes, flickr, NatGeo, etc).
     # See: https://dev.twitter.com/cards/types/summary-large-image
     twitter = "silmaril34"
+    github = "bplessis"
 
 [markup]
   [markup.highlight]
