@@ -63,8 +63,6 @@ hr {
 main {
     display: flex;
     min-height: calc( 100vh - 30px);
-    width: 60%;
-    margin-left: 10%;
 
     aside {
         border-left: 1px solid rgb(204, 204, 204);
@@ -306,3 +304,50 @@ body > footer {
     font-size: 12px;
 }
 
+
+@media screen and (max-width: 680px), screen and (orientation: portrait) {
+    /* … */
+    main {
+        width: auto;
+        margin-left: 5px;
+        margin-right: 5px;
+        aside {
+            display: none;
+        }
+    }
+    article.post-link {
+        header {
+            p {
+                display: none;
+            }
+        }
+    } 
+    .home-read-more {
+        a, a:visited {
+            width: 100%;
+        }
+    }
+}
+
+@media screen and (min-width: 681px) {
+    /* … */
+    main {
+        width: 60%;
+        margin-left: 10%;
+        aside {
+            display: block;
+        }
+    }
+    article.post-link {
+        header {
+            p {
+                display: block;
+            }
+        }
+    } 
+    .home-read-more {
+        a, a:visited {
+            width: 50%;
+        }
+    }
+}
