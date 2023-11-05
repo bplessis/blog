@@ -186,6 +186,7 @@ Ok then now there is the simple question of sharing thoses new shiny packages wi
 {{< highlight shell >}}
 root@frb:~# cat /etc/fstab.ns3_plessis_info
 /usr/jails/basejail /usr/jails/ns3.plessis.info/basejail nullfs ro 0 0
+/usr/local/poudriere/data/packages /usr/jails/ns3.plessis.info/usr/local/poudriere/data/packages nullfs ro 0 0
 {{< / highlight >}}
 
 And in the jail you need to add the repository with a simple definition:
