@@ -16,38 +16,46 @@ $container-padding-lg: 96px;
 }
 
 html, body {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-  font-family: $primary-font;
-  color: #212529;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    font-family: $primary-font;
+    color: #212529;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: $heading-font;
-  font-weight: bold;
-  padding: 20px 0;
+    font-family: $heading-font;
+    font-weight: bold;
+    padding: 20px 0;
 }
 
 h1 {
     font-size: 2rem;
 }
 
-p {
-  line-height: 2rem;
+article#content {
+    p {
+        margin-top: 1em;
+        margin-bottom: 1em;
+        line-height: 1.5rem;
+    }
+
+    ul, ol {
+        padding-left: 2.5em; 
+    }
 }
 
 a, a:visited {
-  text-decoration: none;
-  color: $link-bl;
+    text-decoration: none;
+    color: $link-bl;
 }
 
 a:hover {
-  opacity: 0.5;
+    opacity: 0.5;
 }
 
 .icons:hover{
-  opacity: 0.5;
+    opacity: 0.5;
 }
 
 hr {
@@ -147,9 +155,6 @@ article.post-preview {
             margin-top: 0;
             margin-bottom: 1rem;
         }
-    }
-    p {
-        
     }
     footer {
         background-color: transparent;
